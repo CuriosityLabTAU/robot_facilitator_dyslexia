@@ -18,8 +18,11 @@ if not creds or creds.invalid:
 service = build('sheets', 'v4', http=creds.authorize(Http()))
 
 # Call the Sheets API
-SPREADSHEET_ID = '1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms'
-RANGE_NAME = 'Class Data!A2:E'
+#SPREADSHEET_ID = '1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms'
+SPREADSHEET_ID = '1QvgPS-FJmNY-JDLdt84LsJj1Jt6LwuGmjb1ZCz09ArI'
+
+#RANGE_NAME = 'Class Data!A2:E'
+RANGE_NAME = 'Sheet1!A2:E'
 result = service.spreadsheets().values().get(spreadsheetId=SPREADSHEET_ID,
                                              range=RANGE_NAME).execute()
 values = result.get('values', [])
