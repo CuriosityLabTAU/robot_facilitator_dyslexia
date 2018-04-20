@@ -29,7 +29,9 @@ values = result.get('values', [])
 if not values:
     print('No data found.')
 else:
+    print(values)
     print('word, response:')
     for row in values:
+        print("row=",row)
         # Print columns A and E, which correspond to indices 0 and 4.
-        print('%s, %s' % (row[1], row[1]))
+        print(row[0], row[1])
