@@ -33,7 +33,7 @@ runTouchApp(root)
 
 #class TutorialApp(App):
 #    def build(self):
-#        layout = GridLayout(cols=3, row_force_default=True, row_default_height=40)
+#        layout = GridLayout(cols=3, row_force_default=True, row_default_height=40) #f
 #        for i in range(1,20):
 #            layout.add_widget(Button(text='Hello '+str(i), size_hint_x=None, width=100))
 #            layout.add_widget(Button(text='World '+str(i)))
