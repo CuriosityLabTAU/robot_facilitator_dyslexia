@@ -5,6 +5,7 @@ from kivy.uix.label import Label
 from kivy.uix.scrollview import ScrollView
 from kivy.core.window import Window
 from kivy.app import runTouchApp
+from kivy.app import App
 
 layout = GridLayout(cols=2, spacing=1, size_hint_y=None)
 # Make sure the height is such that there is something to scroll.
