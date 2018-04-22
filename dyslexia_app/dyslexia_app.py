@@ -34,8 +34,8 @@ class ScreenDyslexia(Screen):
                 word_i = dyslexia_single_data['word'][i]
                 response_i = dyslexia_single_data['response'][i]
                 print(word_i, response_i)
-                lbl_word = Label(font_name='fonts/OpenSansHebrew-Bold.ttf', text=word_i, size_hint_y=None, height=40)
-                lbl_response = Label(font_name='fonts/the_font.ttf', text=response_i, size_hint_y=None, height=40)
+                lbl_word = Label(font_name='fonts/OpenSansHebrew-Bold.ttf', text=word_i, size_hint_y=None, height=20)
+                lbl_response = Label(font_name='fonts/the_font.ttf', text=response_i, size_hint_y=None, height=20)
                 # btn_response = Button(text=str(response_i), size_hint_y=None, height=40)
                 layout.add_widget(lbl_word)
                 layout.add_widget(lbl_response)

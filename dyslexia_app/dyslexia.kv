@@ -1,22 +1,41 @@
 <ScreenDyslexia>:
     name: 'ScreenDyslexia'
-    Widget:
-        canvas.before:
-            Color:
-                rgba: 0.2,0.3,0.4,1
-            Rectangle:
-                pos: self.pos
-                size: self.size
-        Label:
-            pos: root.width * 0, root.height * 0.90
-            size: root.width * 1, root.height * 0.05
-            id: title
-            text:"Kivy Hebrew Testing"
-            background_color: 1,0,0,1
-            font_name: "fonts/the_font.ttf"
-            font_size: 24
-            color: 1,1,1,1
-        GridLayout:
-            id: gridlayout_words
-            col: 2
-            size_hint_y: None
+    ScrollView:
+        do_scroll_x: False
+        Widget:
+            canvas.before:
+                Color:
+                    rgba: 0.2,0.3,0.4,1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            Label:
+                pos: root.width * 0, root.height * 0.90
+                size: root.width * 1, root.height * 0.05
+                id: title
+                text:"Kivy Hebrew Testing"
+                background_color: 1,0,0,1
+                font_name: "fonts/the_font.ttf"
+                font_size: 24
+                color: 1,1,1,1
+            GridLayout:
+                id: gridlayout_words
+                col: 2
+                size_hint_y: None
+                height: self.minimum_height
+                Label:
+                    text: 'Title'
+                    size_hint_y: None
+                    height: '29sp'
+                Label:
+                    text: 'Title'
+                    size_hint_y: None
+                    height: '29sp'
+                Label:
+                    text: 'Title'
+                    size_hint_y: None
+                    height: '29sp'
+                Label:
+                    text: 'Title'
+                    size_hint_y: None
+                    height: '29sp'
