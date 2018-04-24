@@ -19,7 +19,7 @@ class ScreenDyslexia(Screen):
         def __init__(self, the_app):
             self.the_app = the_app
             super(Screen, self).__init__()
-            #self.add_words()
+            self.add_words()
             # self.ids["title"].text = "test"
             #self.ids["text_1"].bind(text=HebrewManagement.text_change)
             #self.ids["text_2"].bind(text=HebrewManagement.text_change)
