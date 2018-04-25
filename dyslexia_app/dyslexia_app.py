@@ -10,15 +10,15 @@ from kivy.app import App
 from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager, Screen
 from hebrew_management import *
+from kivy_classes import *
+from kivy_communication import *
+from kivy.uix.spinner import Spinner
+
 
 class MyScreenManager(ScreenManager):
     the_app = None
 
-class LabelB(Label):
-    bcolor  = ListProperty([1,1,1,1])
-
 class ScreenDyslexia(Screen):
-        the_app = None
 
         def __init__(self, the_app):
             self.the_app = the_app
@@ -38,15 +38,20 @@ class ScreenDyslexia(Screen):
                 word_i = dyslexia_single_data['word'][i]
                 response_i = dyslexia_single_data['response'][i]
                 print(word_i, response_i)
-                lbl_word = LabelB(id='word'+str(i), bcolor=(1,0,0,1), font_name='fonts/the_font.ttf', text=word_i[::-1])#, size_hint_y=None, height=20)
-                lbl_response = Label(font_name='fonts/the_font.ttf', text=response_i, size_hint_y=None, height=20)
+                lbl_response = LabelB(text=response_i[::-1])
+                lbl_word = LabelB(id='word' + str(i), text=word_i[::-1])  # , size_hint_y=None, height=20)
                 # btn_response = Button(text=str(response_i), size_hint_y=None, height=40)
-                layout.add_widget(lbl_word)
+                spinner = Spinner(id='condition_spinner', text='condition', font_size=16,
+                                        background_color=(0, 0, 0, 1), values=('c-g-', 'c+g-', 'c-g+', 'c+g+'), height=20, on_text= self.the_app.condition_selected)
+                layout.add_widget(spinner)
                 layout.add_widget(lbl_response)
+                layout.add_widget(lbl_word)
                 #self.ids['word' + str(i)].bind(text=HebrewManagement.text_change)
 
-
-
+        def add_spinner(self):
+            spinner = LoggedSpinner (id= 'condition_spinner', text= 'condition', font_size= 16,
+                                     background_color= (0.2,0.2,0.2,1), values= ('c-g-','c+g-','c-g+','c+g+'), height=20)
+            return spinner
 
 class DyslexiaApp(App):
     def build(self):
@@ -63,6 +68,13 @@ class DyslexiaApp(App):
         self.screen_manager.add_widget(screen_dyslexia)
         self.screen_manager.current = 'ScreenDyslexia'
         return self.screen_manager
+    def condition_selected(self):
+        # NOW MOVED TO ADD AND NAMED condition_selection
+        print("condition_selected")
+        #condition = self.screen_manager.get_screen('zero_screen_room').ids['condition_spinner'].text
+        # self.the_app.update_condition(condition)
+        #self.update_condition(condition)
+        print('text,id')
 
 
 if __name__ == "__main__":
