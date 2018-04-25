@@ -41,8 +41,8 @@ class ScreenDyslexia(Screen):
                 lbl_response = LabelB(text=response_i[::-1])
                 lbl_word = LabelB(id='word' + str(i), text=word_i[::-1])  # , size_hint_y=None, height=20)
                 # btn_response = Button(text=str(response_i), size_hint_y=None, height=40)
-                spinner = Spinner(id='condition_spinner', text='condition', font_size=16,
-                                        background_color=(0, 0, 0, 1), values=('c-g-', 'c+g-', 'c-g+', 'c+g+'), height=20, on_text= self.the_app.condition_selected)
+                spinner = Spinner(id='condition_spinner', text='type', font_size=16, sync_height = True,
+                                        background_color=(0, 0, 0, 1), font_name= 'fonts/the_font.ttf', values= ('1','2','3','4'), height=20, on_text= self.the_app.condition_selected)
                 layout.add_widget(spinner)
                 layout.add_widget(lbl_response)
                 layout.add_widget(lbl_word)
@@ -50,7 +50,7 @@ class ScreenDyslexia(Screen):
 
         def add_spinner(self):
             spinner = LoggedSpinner (id= 'condition_spinner', text= 'condition', font_size= 16,
-                                     background_color= (0.2,0.2,0.2,1), values= ('c-g-','c+g-','c-g+','c+g+'), height=20)
+                                     background_color= (0.2,0.2,0.2,1), font_name= 'fonts/the_font.ttf', values= ('1','2','3','4'), height=20)
             return spinner
 
 class DyslexiaApp(App):
