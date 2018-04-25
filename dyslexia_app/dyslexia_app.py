@@ -2,6 +2,7 @@ import json
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.button import Button
 from kivy.uix.label import Label
+from kivy.properties import ListProperty
 from kivy.uix.scrollview import ScrollView
 from kivy.core.window import Window
 from kivy.app import runTouchApp
@@ -12,6 +13,9 @@ from hebrew_management import *
 
 class MyScreenManager(ScreenManager):
     the_app = None
+
+class LabelB(Label):
+    bcolor  = ListProperty([1,1,1,1])
 
 class ScreenDyslexia(Screen):
         the_app = None
@@ -34,7 +38,7 @@ class ScreenDyslexia(Screen):
                 word_i = dyslexia_single_data['word'][i]
                 response_i = dyslexia_single_data['response'][i]
                 print(word_i, response_i)
-                lbl_word = Label(id='word'+str(i), font_name='fonts/the_font.ttf', text=word_i[::-1])#, size_hint_y=None, height=20)
+                lbl_word = LabelB(id='word'+str(i), bcolor=(1,0,0,1), font_name='fonts/the_font.ttf', text=word_i[::-1])#, size_hint_y=None, height=20)
                 lbl_response = Label(font_name='fonts/the_font.ttf', text=response_i, size_hint_y=None, height=20)
                 # btn_response = Button(text=str(response_i), size_hint_y=None, height=40)
                 layout.add_widget(lbl_word)

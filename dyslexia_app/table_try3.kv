@@ -1,0 +1,17 @@
+ScrollView:
+    size_hint: (1,None)
+    do_scroll_x: True
+    do_scroll_y: False
+    bar_width: 4
+    GridLayout:
+        cols: 2
+        size_hint_y: None
+        size_hint_x: 1
+        height: self.minimum_height
+        Label:
+            id: input_txt
+            text:"my text"
+            font_size: root.height / 25
+            text_size: self.width, None
+            height: self.texture_size[1]
+            size_hint_y: None

@@ -10,7 +10,7 @@ from kivy.uix.scrollview import ScrollView
 from kivy.core.window import Window
 
 
-class TutorialApp(App):
+class table_try3App(App):
     def build(self):
         layout = GridLayout(cols=3, row_force_default=True, row_default_height=40)
         layout.bind(minimum_height=layout.setter('height'))
@@ -24,4 +24,4 @@ class TutorialApp(App):
         return root
 
 if __name__ == "__main__":
-    TutorialApp().run()
+    table_try3App().run()
