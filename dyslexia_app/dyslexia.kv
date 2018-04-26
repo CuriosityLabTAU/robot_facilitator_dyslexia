@@ -1,12 +1,36 @@
 <ScreenDyslexia>:
     name: 'ScreenDyslexia'
     BoxLayout:
+        orientation: 'vertical'
         canvas.before:
             Color:
                 rgba: 0.2,0.3,0.4,1
             Rectangle:
                 pos: self.pos
                 size: self.size
+        BoxLayout:
+            size_hint_y: None
+            height: '48dp'
+
+            ToggleButton:
+                id: summary
+                text:'םוכיס'
+                font_name: 'fonts/the_font.ttf'
+                group: 'ScrollView'
+
+            ToggleButton:
+                id: tefel
+                text:'לפת תולימ'
+                font_name: 'fonts/the_font.ttf'
+                group: 'ScrollView'
+
+            ToggleButton:
+                id: single
+                text: 'תודדוב םילימ'
+                font_name: 'fonts/the_font.ttf'
+                group: 'ScrollView'
+                state: 'down'
+
         Label:
             text: 'Rinat'
             size_hint_y: None
@@ -21,6 +45,7 @@
                 rows: 200
                 spacing: 2
                 size_hint_y: None
+                padding: '40dp'
                 height: self.minimum_height
 
                 LabelB:

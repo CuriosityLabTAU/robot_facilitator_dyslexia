@@ -9,7 +9,7 @@ Builder.load_string("""
   bcolor: 1, 1, 1, 1
   color: 0, 0, 0, 1
   size_hint_y: None
-  height: 20
+  height: 30
   font_name: 'fonts/the_font.ttf'
   canvas.before:
     Color:
