@@ -75,3 +75,37 @@
                     size_hint_y: None
                     bcolor: 1, 0, 0, 1
 
+        ScrollView:
+            id: tefel_content
+            do_scroll_x: False
+            bar_width: 10
+            padding: 5
+            scroll_type: ['bars','content']
+            GridLayout:
+                canvas.before:
+                    Color:
+                        rgba: 1,1,1,1
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+                id: gridlayout_tefel
+                cols: 3
+                rows: 200
+                spacing: 2
+                size_hint_y: None
+                padding: '50dp'
+                height: self.minimum_height
+
+                LabelB:
+                    text: 'תועט גוס'
+                    size_hint_y: None
+                    bcolor: 1, 0, 0, 1
+                LabelB:
+                    text: 'הבוגת'
+                    size_hint_y: None
+                    bcolor: 1, 0, 0, 1
+                LabelB:
+                    text: 'הלימ'
+                    size_hint_y: None
+                    bcolor: 1, 0, 0, 1
+

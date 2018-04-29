@@ -26,16 +26,16 @@ class ScreenDyslexiaSingle (Screen):
         def __init__(self, the_app):
             self.the_app = the_app
             super(Screen, self).__init__()
-            self.add_words()
+            self.add_words_single()
             # self.ids["title"].text = "test"
             #self.ids["text_1"].bind(text=HebrewManagement.text_change)
             #self.ids["text_2"].bind(text=HebrewManagement.text_change)
             # self.ids["audience_list_group_2"].bind(text=HebrewManagement.text_change)
             # self.ids["audience_list_group_3"].bind(text=HebrewManagement.text_change)
 
-        def add_words(self):
-            layout = self.ids['gridlayout_words']
-            with open('dyslexia_single.json') as data_file:
+        def add_words_single(self):
+            layout = self.ids['gridlayout_tefel']
+            with open('dyslexia_tefel.json') as data_file:
                 dyslexia_single_data = json.load(data_file)
             for i in range(len(dyslexia_single_data['word'])):
                 word_i = dyslexia_single_data['word'][i]
@@ -50,6 +50,8 @@ class ScreenDyslexiaSingle (Screen):
                 layout.add_widget(lbl_response)
                 layout.add_widget(lbl_word)
                 #self.ids['word' + str(i)].bind(text=HebrewManagement.text_change)
+
+
 
         def add_spinner(self):
             spinner = LoggedSpinner (id= 'condition_spinner', text= 'condition', font_size= 16,
