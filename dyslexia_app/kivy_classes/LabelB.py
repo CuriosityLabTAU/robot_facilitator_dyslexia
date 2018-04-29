@@ -6,7 +6,7 @@ from kivy.lang import Builder
 
 Builder.load_string("""
 <LabelB>:
-  bcolor: 1, 1, 1, 1
+  bcolor: 0, 1, 1, 1
   color: 0, 0, 0, 1
   size_hint_y: None
   height: 30
@@ -20,6 +20,6 @@ Builder.load_string("""
 """)
 
 class LabelB(Label):
-  bcolor = ListProperty([1,1,1,1])
+  bcolor = ListProperty([0.1,0.2,0.4,1])
 
 Factory.register('KivyB', module='LabelB')

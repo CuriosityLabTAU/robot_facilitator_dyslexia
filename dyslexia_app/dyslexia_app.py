@@ -1,6 +1,8 @@
 import json
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.button import Button
+from kivy.uix.togglebutton import ToggleButton
+from kivy.uix.behaviors import ToggleButtonBehavior
 from kivy.uix.label import Label
 from kivy.properties import ListProperty
 from kivy.uix.scrollview import ScrollView
@@ -18,7 +20,8 @@ from kivy.uix.spinner import Spinner
 class MyScreenManager(ScreenManager):
     the_app = None
 
-class ScreenDyslexia(Screen):
+
+class ScreenDyslexiaSingle (Screen):
 
         def __init__(self, the_app):
             self.the_app = the_app
@@ -56,7 +59,6 @@ class ScreenDyslexia(Screen):
 class DyslexiaApp(App):
     def build(self):
         #layout = GridLayout(cols=3, row_force_default=True, row_default_height=40)
-
         #for i in range(1,20):
         #    layout.add_widget(Button(text='Hello '+str(i), size_hint_x=None, width=100))
         #    layout.add_widget(Button(text='World '+str(i)))
@@ -64,10 +66,11 @@ class DyslexiaApp(App):
 
         self.the_app = self
         self.screen_manager = MyScreenManager()
-        screen_dyslexia = ScreenDyslexia(self)
-        self.screen_manager.add_widget(screen_dyslexia)
-        self.screen_manager.current = 'ScreenDyslexia'
+        screen_dyslexia_single = ScreenDyslexiaSingle(self)
+        self.screen_manager.add_widget(screen_dyslexia_single)
+        self.screen_manager.current = 'ScreenDyslexiaSingle'
         return self.screen_manager
+
     def condition_selected(self):
         # NOW MOVED TO ADD AND NAMED condition_selection
         print("condition_selected")
@@ -76,6 +79,21 @@ class DyslexiaApp(App):
         #self.update_condition(condition)
         print('text,id')
 
+    def on_toggle_btn(self, screen_name):
+        print ('state:', 'screen_name',screen_name)
+
+    def change_screen(self, screen_name):
+        print ('state:', 'screen_name', screen_name)
+        if (screen_name == 'single'):
+            self.screen_manager.get_screen('ScreenDyslexiaSingle').ids['single_content'].opacity = 1
+        elif (screen_name == 'tefel'):
+            self.screen_manager.get_screen('ScreenDyslexiaSingle').ids['single_content'].opacity = 0
+        elif (screen_name == 'summary'):
+            self.screen_manager.get_screen('ScreenDyslexiaSingle').ids['single_content'].opacity = 0
+
+
+
+        #self.screen_manager.current = screen_name
 
 if __name__ == "__main__":
     DyslexiaApp().run()  # the call is from main.py
