@@ -1,6 +1,6 @@
 <ScreenDyslexia>:
     name: 'ScreenDyslexia'
-    BoxLayout:
+    FloatLayout:
         orientation: 'vertical'
         id: 'single'
         canvas.before:
@@ -11,7 +11,7 @@
                 size: self.size
         BoxLayout:
             id: menu
-            pos: 0,0
+            pos: 0 , screen.height
             size_hint_y: None
             height: '48dp'
 
