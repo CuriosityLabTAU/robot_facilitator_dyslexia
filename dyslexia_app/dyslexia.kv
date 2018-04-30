@@ -1,5 +1,5 @@
-<ScreenDyslexiaSingle>:
-    name: 'ScreenDyslexiaSingle'
+<ScreenDyslexia>:
+    name: 'ScreenDyslexia'
     BoxLayout:
         orientation: 'vertical'
         id: 'single'
@@ -11,6 +11,7 @@
                 size: self.size
         BoxLayout:
             id: menu
+            pos: 0,0
             size_hint_y: None
             height: '48dp'
 
@@ -44,6 +45,7 @@
         ScrollView:
             id: single_content
             do_scroll_x: False
+            pos:10, 10
             bar_width: 10
             padding: 5
             scroll_type: ['bars','content']
@@ -54,7 +56,7 @@
                     Rectangle:
                         pos: self.pos
                         size: self.size
-                id: gridlayout_words
+                id: gridlayout_single
                 cols: 3
                 rows: 200
                 spacing: 2
@@ -79,6 +81,7 @@
             id: tefel_content
             do_scroll_x: False
             bar_width: 10
+            pos: 10, 10
             padding: 5
             scroll_type: ['bars','content']
             GridLayout:
