@@ -6,10 +6,11 @@ from kivy.lang import Builder
 
 Builder.load_string("""
 <LabelB>:
-  bcolor: 0, 1, 1, 1
+  bcolor: 235/255.0, 234/255.0,236/255.0, 1
   color: 0, 0, 0, 1
   size_hint_y: None
   height: 30
+  font_size: 20
   font_name: 'fonts/the_font.ttf'
   canvas.before:
     Color:
@@ -20,6 +21,6 @@ Builder.load_string("""
 """)
 
 class LabelB(Label):
-  bcolor = ListProperty([0.1,0.2,0.4,1])
+  bcolor = ListProperty([235/255.0, 234/255.0,236/255.0,1])
 
 Factory.register('KivyB', module='LabelB')

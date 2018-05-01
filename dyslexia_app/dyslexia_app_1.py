@@ -43,18 +43,11 @@ class ScreenDyslexia (Screen):
             super(SpinnerDyslexia, self).__init__()
 
     def add_words_single(self):
-        layout = self.ids['gridlayout']
+        layout = self.ids['gridlayout_single']
         with open('dyslexia_single.json') as data_file:
             dyslexia_single_data = json.load(data_file)
 
         single_length = len(dyslexia_single_data['word'])
-        lbl_head1 = LabelB(text='תועט גוס', bcolor= (1, 0, 0, 1))
-        lbl_head2 = LabelB(text='הבוגת', bcolor=(1, 0, 0, 1))
-        lbl_head3 = LabelB(text='הלימ', bcolor=(1, 0, 0, 1))
-        layout.add_widget(lbl_head1)
-        layout.add_widget(lbl_head2)
-        layout.add_widget(lbl_head3)
-
         for i in range(single_length):
             word_i = dyslexia_single_data['word'][i]
             response_i = dyslexia_single_data['response'][i]
@@ -62,7 +55,7 @@ class ScreenDyslexia (Screen):
             lbl_response = LabelB(text=response_i[::-1])
             lbl_word = LabelB(id='word' + str(i), text=word_i[::-1])  # , size_hint_y=None, height=20)
             # btn_response = Button(text=str(response_i), size_hint_y=None, height=40)
-            spinner = SpinnerDyslexia(id='s'+str(i), sync_height = True, text='test',
+            spinner = SpinnerDyslexia(id='s'+str(i), sync_height = True,
                                     font_name= 'fonts/the_font.ttf', values= ('1','2','3','4'),
                                     height=16)
             layout.add_widget(spinner)
@@ -71,16 +64,10 @@ class ScreenDyslexia (Screen):
             #self.ids['word' + str(i)].bind(text=HebrewManagement.text_change)
 
     def add_words_tefel(self):
-        layout = self.ids['gridlayout']
+        layout = self.ids['gridlayout_tefel']
         with open('dyslexia_tefel.json') as data_file:
             dyslexia_tefel_data = json.load(data_file)
         tefel_length = len(dyslexia_tefel_data['word'])
-        lbl_head1 = LabelB(text='תועט גוס', bcolor= (1, 0, 0, 1))
-        lbl_head2 = LabelB(text='הבוגת', bcolor=(1, 0, 0, 1))
-        lbl_head3 = LabelB(text='הלימ', bcolor=(1, 0, 0, 1))
-        layout.add_widget(lbl_head1)
-        layout.add_widget(lbl_head2)
-        layout.add_widget(lbl_head3)
         for i in range(tefel_length):
             word_i = dyslexia_tefel_data['word'][i]
             response_i = dyslexia_tefel_data['response'][i]
@@ -118,11 +105,10 @@ class DyslexiaApp(App):
         return self.screen_manager
 
 
-    def mistake_type_selected(self,spinner_inst):
+    def condition_selected(self,):
         # NOW MOVED TO ADD AND NAMED condition_selection
-        print(spinner_inst.id)
         print("condition_selected app")
-        #condition = self.screen_manager.get_screen('ScreenDyslexia').ids['condition_spinner'].text
+        # condition = self.screen_manager.get_screen('zero_screen_room').ids['condition_spinner'].text
         # self.the_app.update_condition(condition)
         # self.update_condition(condition)
         print('text,id')
@@ -132,13 +118,14 @@ class DyslexiaApp(App):
     def change_screen(self, screen_name):
         print ('state:', 'screen_name', screen_name)
         if (screen_name == 'single'):
-            self.screen_manager.get_screen('ScreenDyslexia').ids['gridlayout'].clear_widgets()
-            self.screen_manager.get_screen('ScreenDyslexia').add_words_single()
+            self.screen_manager.get_screen('ScreenDyslexia').ids['single_content'].opacity = 1
+            self.screen_manager.get_screen('ScreenDyslexia').ids['tefel_content'].opacity = 0
         elif (screen_name == 'tefel'):
-            self.screen_manager.get_screen('ScreenDyslexia').ids['gridlayout'].clear_widgets()
-            self.screen_manager.get_screen('ScreenDyslexia').add_words_tefel()
+            self.screen_manager.get_screen('ScreenDyslexia').ids['single_content'].opacity = 0
+            self.screen_manager.get_screen('ScreenDyslexia').ids['tefel_content'].opacity = 1
         elif (screen_name == 'summary'):
-            pass
+            self.screen_manager.get_screen('ScreenDyslexia').ids['single_content'].opacity = 0
+            self.screen_manager.get_screen('ScreenDyslexia').ids['tefel_content'].opacity = 0
 
         #self.screen_manager.current = screen_name
 
