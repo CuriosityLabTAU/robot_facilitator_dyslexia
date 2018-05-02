@@ -16,21 +16,21 @@
             size_hint_y: None
             height: '48dp'
 
-            ToggleButton:
+            ToggleButtonDyslexia:
                 id: menu_summary
                 text:'םוכיס'
                 font_name: 'fonts/the_font.ttf'
                 group: 'Menu'
                 on_press:  app.change_screen('summary')
 
-            ToggleButton:
+            ToggleButtonDyslexia:
                 id: menu_tefel
                 text:'לפת תולימ'
                 font_name: 'fonts/the_font.ttf'
                 group: 'Menu'
                 on_press:  app.change_screen('tefel')
 
-            ToggleButton:
+            ToggleButtonDyslexia:
                 id: menu_single
                 text: 'תודדוב םילימ'
                 font_name: 'fonts/the_font.ttf'
@@ -38,11 +38,13 @@
                 state: 'down'
                 on_press:  app.change_screen('single')
 
-        LabelB:
+        LabelDyslexia:
             text: '   13 - ליג  ,הבקנ - ןימ'
             size_hint_y: None
             height: '29sp'
             bcolor: 52/255.0, 164/255.0, 204/255.0, 1
+            bcolor: 1,1,1,1
+
         FloatLayout:
             size: root.width, root.height
             FloatLayout:
@@ -54,20 +56,8 @@
                     opacity: 1
                     disables: False
                     scroll_type: ['bars','content']
-                    GridLayout:
-                        canvas.before:
-                            Color:
-                                rgba: 1,1,1,1
-                            Rectangle:
-                                pos: self.pos
-                                size: self.size
-                        id: gridlayout
-                        cols: 3
-                        rows: 200
-                        spacing: 2
-                        size_hint_y: None
-                        padding: '50dp'
-                        height: self.minimum_height
+
+
 
 
 

@@ -1,22 +1,12 @@
 # -*- coding: utf-8 -*-
 
-import json
-from kivy.uix.gridlayout import GridLayout
-from kivy.uix.button import Button
-from kivy.uix.togglebutton import ToggleButton
-from kivy.uix.behaviors import ToggleButtonBehavior
-from kivy.uix.label import Label
-from kivy.properties import ListProperty
-from kivy.uix.scrollview import ScrollView
-from kivy.core.window import Window
-from kivy.app import runTouchApp
-from kivy.app import App
 from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager, Screen
-from hebrew_management import *
-from kivy_classes import *
-from kivy_communication import *
 from kivy.uix.spinner import Spinner
+
+from dyslexia_app.kivy_classes import *
+from dyslexia_app.kivy_communication import *
+
 
 class MyScreenManager(ScreenManager):
     the_app = None

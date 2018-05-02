@@ -1,18 +1,9 @@
 from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager, Screen
-from AlignedTextInput import *
 
-
-import json
-import random
 #from kivy_communication import *
-import sys
-import time
-import os
-import subprocess
 from hebrew_management import *
-from kivy.clock import *
-from kivy.uix.label import Label
+
 
 class MyScreenManager (ScreenManager):
     the_app = None
