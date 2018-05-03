@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import numpy as np
 from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy_classes import *
@@ -10,8 +11,10 @@ class MyScreenManager(ScreenManager):
     the_app = None
 
 class ScreenDyslexia (Screen):
-    answers_single = []
-    answers_tefel = []
+    answers_single1 = []
+    answers_single2 = []
+    answers_tefel1 = []
+    answers_tefel2 = []
     dyslexia_single_data = {}
     dyslexia_tefel_data = {}
     dyslexia_single_mistakes = {}
@@ -26,11 +29,12 @@ class ScreenDyslexia (Screen):
         self.the_app = the_app
         super(Screen, self).__init__()
         self.read_json_data ()
+        self.init_variables ()
         self.reverse_mistakes_text()
         self.create_task_grid('single')
         self.create_task_grid('tefel')
-        self.create_single_grid() #init layout_single
-        self.create_tefel_grid()  #init layout_tefel
+        #self.create_single_grid() #init layout_single
+        #self.create_tefel_grid()  #init layout_tefel
         self.ids['scroll_content'].add_widget(self.layout_single)
         self.current_tab = 'single'
 
@@ -38,21 +42,25 @@ class ScreenDyslexia (Screen):
         #read the json files that contain the single and tefel words tasks
         with open('dyslexia_single.json') as data_file:
             self.dyslexia_single_data = json.load(data_file)
-        self.single_length = len(self.dyslexia_single_data['word'])
-
         with open('dyslexia_tefel.json') as data_file:
             self.dyslexia_tefel_data = json.load(data_file)
-        self.tefel_length = len(self.dyslexia_tefel_data['word'])
-
         with open('dyslexia_single_mistakes.json') as data_file:
             self.dyslexia_single_mistakes = json.load(data_file)
-        self.single_mistakes_length = len(self.dyslexia_single_mistakes['initials'])
-
         with open('dyslexia_tefel_mistakes.json') as data_file:
             self.dyslexia_tefel_mistakes = json.load(data_file)
+
+
+    def init_variables(self):
+        self.single_length = len(self.dyslexia_single_data['word'])
+        self.answers_single1 = np.zeros(self.single_length)
+        self.answers_single2 = np.zeros(self.single_length)
+        self.tefel_length = len(self.dyslexia_tefel_data['word'])
+        self.answers_tefel1 = np.zeros(self.single_length)
+        self.answers_tefel2 = np.zeros(self.single_length)
+        self.single_mistakes_length = len(self.dyslexia_single_mistakes['initials'])
         self.single_tefel_length = len(self.dyslexia_tefel_mistakes['initials'])
-
-
+        self.answers_single_summary = np.zeros(self.single_mistakes_length)
+        self.answers_tefel_summary = np.zeros(self.tefel_mistakes_length)
 
     def reverse_mistakes_text(self):
 
@@ -101,12 +109,12 @@ class ScreenDyslexia (Screen):
             lbl_word = LabelDyslexia(id='word' + str(i), text=word_i[::-1])
             # btn_response = Button(text=str(response_i), size_hint_y=None, height=40)
             spinner_values = self.dyslexia_mistakes['initials']
-            spinner1 = SpinnerDyslexia(id='s' + str(i),
+            spinner1 = SpinnerDyslexia(id='s1_' + str(i),
                                        sync_height=True,
                                        text='האיגש גוס',
                                        values=spinner_values,
                                        option_cls=SpinnerOptionDyslexia)
-            spinner2 = SpinnerDyslexia(id='s' + str(i),
+            spinner2 = SpinnerDyslexia(id='s2_' + str(i),
                                        sync_height=True,
                                        text='האיגש גוס',
                                        values=spinner_values,
@@ -163,9 +171,12 @@ class ScreenDyslexia (Screen):
     def create_tefel_grid(self):
         self.layout_tefel = GridLayoutDyslexia()
 
+        lbl_head0 = LabelHeadingDyslexia(text='(שי םא) ףסונ האיגש גוס')
         lbl_head1 = LabelHeadingDyslexia(text ='תועט גוס')
         lbl_head2 = LabelHeadingDyslexia(text ='הבוגת')
         lbl_head3 = LabelHeadingDyslexia(text = 'הלימ')
+
+        self.layout_single.add_widget(lbl_head0)
         self.layout_tefel.add_widget(lbl_head1)
         self.layout_tefel.add_widget(lbl_head2)
         self.layout_tefel.add_widget(lbl_head3)
@@ -202,8 +213,15 @@ class DyslexiaApp(App):
 
     def mistake_type_selected(self,spinner_inst):
         # NOW MOVED TO ADD AND NAMED condition_selection
-        print(spinner_inst.id)
+        print(spinner_inst.id, spinner_inst.text)
         print("condition_selected app")
+        ["foo", "bar", "baz"].index("bar")
+        screen_dyslexia = self.screen_manager.get_screen('ScreenDyslexia')
+
+        mistake_index = screen_dyslexia.dyslexia_single_mistakes['initials'].index(spinner_inst.text)
+        screen_dyslexia.answers_single1[mistake_index] = mistake_index
+        screen_dyslexia.answers_single_summary[mistake_index] += 1
+
         #condition = self.screen_manager.get_screen('ScreenDyslexia').ids['condition_spinner'].text
         # self.the_app.update_condition(condition)
         # self.update_condition(condition)
@@ -217,7 +235,7 @@ class DyslexiaApp(App):
         if (screen_name == 'single'):
             self.current_tab = 'single'
             self.screen_manager.get_screen('ScreenDyslexia').ids['scroll_content'].clear_widgets()
-            self.screen_manager.get_screen('ScreenDyslexia').ids['scroll_content'].add_widget(self.screen_manager.get_screen('ScreenDyslexia').layout_tefel)
+            self.screen_manager.get_screen('ScreenDyslexia').ids['scroll_content'].add_widget(self.screen_manager.get_screen('ScreenDyslexia').layout_single)
         elif (screen_name == 'tefel'):
             self.current_tab = 'tefel'
             self.screen_manager.get_screen('ScreenDyslexia').ids['scroll_content'].clear_widgets()

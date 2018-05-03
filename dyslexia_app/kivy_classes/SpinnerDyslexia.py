@@ -25,6 +25,7 @@ Builder.load_string("""
     font_size: 20
     font_name: 'fonts/the_font.ttf'
     height: '40dp'
+    on_text: app.mistake_type_selected(self)
 
 """)
 

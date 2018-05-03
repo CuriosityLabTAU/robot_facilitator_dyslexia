@@ -12,6 +12,7 @@ Builder.load_string("""
   height: '40dp'
   font_size: '20sp'
   font_name: 'fonts/the_font.ttf'
+
 """)
 
 class ToggleButtonDyslexia(ToggleButton):
