@@ -1,13 +1,18 @@
+# -*- coding: utf-8 -*-
+
 from kivy.uix.label import Label
 from kivy.properties import ListProperty
 from kivy.uix.spinner import Spinner
+from kivy.uix.button import Button
 from kivy.uix.spinner import SpinnerOption
 from kivy.factory import Factory
 from kivy.lang import Builder
 from kivy.properties import ListProperty, ObjectProperty, BooleanProperty
-import SpinnerOptionDyslexia
-
+from SpinnerOptionDyslexia import SpinnerOptionDyslexia
 from kivy.uix.gridlayout import GridLayout
+#from kivy_communication.kivy_logger import LoggedSpinner
+from kivy_communication import *
+
 
 Builder.load_string("""
 <SpinnerDyslexia>:
@@ -19,24 +24,11 @@ Builder.load_string("""
             size: self.size
     font_size: 20
     font_name: 'fonts/the_font.ttf'
-    height: 20
-
+    height: '40dp'
 
 """)
-class SpinnerOptionDys(SpinnerOption):
-  #def __init__(self):
-  #  super(SpinnerOptionDys, self).__init__()
-
-  color = (1,1,1,1)
-  text = 'rina'
-  #height = 40
-  #height = '40dp'
-  #size_hint_y = None
 
 class SpinnerDyslexia(Spinner):
-  # option_cls = ObjectProperty(SpinnerOptionButtonDyslexia)
-  #option_cls = ObjectProperty(SpinnerOptionButtonDyslexia)
-  option_cls = ObjectProperty(SpinnerOptionDys)
-  pass
+    pass
 
 Factory.register('KivyB', module='SpinnerDyslexia')
