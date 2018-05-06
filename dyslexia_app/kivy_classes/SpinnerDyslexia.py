@@ -22,7 +22,7 @@ Builder.load_string("""
         Rectangle:
             pos: self.pos
             size: self.size
-    font_size: 20
+    font_size: '18sp'
     font_name: 'fonts/the_font.ttf'
     height: '40dp'
     on_text: app.mistake_type_selected(self)

@@ -197,7 +197,50 @@ def get_tefel_mistakes ():
 
     print(dyslexia_tefel_mistakes == data_loaded)
 
+def get_dyslexia_types ():
+    dyslexia_types = {'dyslexia_types':[]}
+
+    # Setup the Sheets API
+    SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly'
+    store = file.Storage('credentials.json')
+    creds = store.get()
+    if not creds or creds.invalid:
+        flow = client.flow_from_clientsecrets('client_secret.json', SCOPES)
+        creds = tools.run_flow(flow, store)
+    service = build('sheets', 'v4', http=creds.authorize(Http()))
+
+    # Call the Sheets API
+    SPREADSHEET_ID = '1xtlwZ2EGO18lPJCNV2IWpvhSFblzFLyyHdka01mAdIs'
+    RANGE_NAME = 'dyslexia_types!A'
+    result = service.spreadsheets().values().get(spreadsheetId=SPREADSHEET_ID,
+                                                 range=RANGE_NAME).execute()
+    values = result.get('values', [])
+    if not values:
+        print('No data found.')
+    else:
+        print('mistake, initial:')
+        for row in values:
+            # Print columns A and E, which correspond to indices 0 and 4.
+            print('%s, %s' % (row[0], row[1]))
+            dyslexia_types['dyslexia_types'].append(row[0])
+
+    print(dyslexia_types)
+
+    # Write JSON file
+    with io.open('dyslexia_types.json', 'w', encoding='utf8') as outfile:
+        str_ = json.dumps(dyslexia_types,
+                          indent=4, sort_keys=True,
+                          separators=(',', ': '), ensure_ascii=False)
+        outfile.write(to_unicode(str_))
+
+    # Read JSON file
+    with open('dyslexia_types.json') as data_file:
+        data_loaded = json.load(data_file)
+
+    print(dyslexia_types == data_loaded)
+
 get_single_task()
 get_tefel_task()
 get_single_mistakes()
 get_tefel_mistakes()
+get_dyslexia_types()

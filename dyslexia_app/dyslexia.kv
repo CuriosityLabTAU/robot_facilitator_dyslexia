@@ -18,17 +18,24 @@
 
             ToggleButtonDyslexia:
                 id: menu_summary
-                text:'םוכיס'
+                text:'ןוחביא'
                 font_name: 'fonts/the_font.ttf'
                 group: 'Menu'
-                on_press:  app.change_screen('summary')
+                on_press:  app.change_tab('diagnosis')
+
+            ToggleButtonDyslexia:
+                id: menu_summary
+                text:'תואיגש םוכיס'
+                font_name: 'fonts/the_font.ttf'
+                group: 'Menu'
+                on_press:  app.change_tab('summary')
 
             ToggleButtonDyslexia:
                 id: menu_tefel
                 text:'לפת תולימ'
                 font_name: 'fonts/the_font.ttf'
                 group: 'Menu'
-                on_press:  app.change_screen('tefel')
+                on_press:  app.change_tab('tefel')
 
             ToggleButtonDyslexia:
                 id: menu_single
@@ -36,7 +43,7 @@
                 font_name: 'fonts/the_font.ttf'
                 group: 'Menu'
                 state: 'down'
-                on_press:  app.change_screen('single')
+                on_press:  app.change_tab('single')
 
         LabelDyslexia:
             text: '   13 - ליג  ,הבקנ - ןימ'

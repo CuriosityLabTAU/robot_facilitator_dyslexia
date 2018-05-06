@@ -10,7 +10,7 @@ Builder.load_string("""
   color: 1, 1, 1, 1
   size_hint_y: None
   height: '40dp'
-  font_size: '20sp'
+  font_size: '18sp'
   font_name: 'fonts/the_font.ttf'
 
 """)
