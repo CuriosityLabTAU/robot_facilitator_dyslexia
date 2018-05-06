@@ -20,6 +20,7 @@ Builder.load_string("""
     size_hint_y: None
     padding: '50dp'
     height: self.minimum_height
+    size_hint_x: 1
 """)
 
 class GridLayoutDyslexia(GridLayout):

@@ -35,7 +35,7 @@ def get_single_task ():
 
     # Call the Sheets API
     SPREADSHEET_ID = '1xtlwZ2EGO18lPJCNV2IWpvhSFblzFLyyHdka01mAdIs'
-    RANGE_NAME = 'single!A2:B'
+    RANGE_NAME = 'single!B3:X'
     result = service.spreadsheets().values().get(spreadsheetId=SPREADSHEET_ID,
                                                  range=RANGE_NAME).execute()
     values = result.get('values', [])
@@ -211,7 +211,7 @@ def get_dyslexia_types ():
 
     # Call the Sheets API
     SPREADSHEET_ID = '1xtlwZ2EGO18lPJCNV2IWpvhSFblzFLyyHdka01mAdIs'
-    RANGE_NAME = 'dyslexia_types!A'
+    RANGE_NAME = 'dyslexia_types!A1:A'
     result = service.spreadsheets().values().get(spreadsheetId=SPREADSHEET_ID,
                                                  range=RANGE_NAME).execute()
     values = result.get('values', [])
@@ -221,7 +221,7 @@ def get_dyslexia_types ():
         print('mistake, initial:')
         for row in values:
             # Print columns A and E, which correspond to indices 0 and 4.
-            print('%s, %s' % (row[0], row[1]))
+            print('%s' % (row[0]))
             dyslexia_types['dyslexia_types'].append(row[0])
 
     print(dyslexia_types)

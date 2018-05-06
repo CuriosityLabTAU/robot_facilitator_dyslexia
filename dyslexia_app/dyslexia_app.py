@@ -60,12 +60,12 @@ class ScreenDyslexia (Screen):
         #init the variables of the study
         self.single_length = len(self.dyslexia_single_data['word'])
         self.tefel_length = len(self.dyslexia_tefel_data['word'])
-        self.answers_tefel1 = np.zeros(self.single_length)
-        self.answers_tefel2 = np.zeros(self.single_length)
+        self.answers_tefel1 = np.zeros(self.single_length)-1
+        self.answers_tefel2 = np.zeros(self.single_length)-1
         self.single_mistakes_length = len(self.dyslexia_single_mistakes['initials'])
         self.tefel_mistakes_length = len(self.dyslexia_tefel_mistakes['initials'])
-        self.answers_single1 = np.zeros(self.single_length)
-        self.answers_single2 = np.zeros(self.single_length)
+        self.answers_single1 = np.zeros(self.single_length)-1
+        self.answers_single2 = np.zeros(self.single_length)-1
         self.answers_single_summary = np.zeros(self.single_mistakes_length)
         self.answers_tefel_summary = np.zeros(self.tefel_mistakes_length)
 
@@ -91,13 +91,13 @@ class ScreenDyslexia (Screen):
 
     def create_diagnosis_grid(self):
         self.layout_diagnosis = GridLayoutDyslexia(cols=2)
-        lbl_head1 = LabelHeadingDyslexia(text='הריחב',size_hint_x=None, width=100)
-        lbl_head0 = LabelHeadingDyslexia(text='היצקלסיד', halign='right')
+        lbl_head1 = LabelHeadingDyslexia(text='הריחב') #,size_hint_x=None, width=300)
+        lbl_head0 = LabelHeadingDyslexia(text='היסקלסיד', halign='right')
         self.layout_diagnosis.add_widget(lbl_head0)
         self.layout_diagnosis.add_widget(lbl_head1)
         for dyslexia in self.dyslexia_types['dyslexia_types']:
             lbl_type = LabelDyslexia(text = dyslexia)
-            checkbox = CheckBoxDyslexia(size_hint_x=None, width=100)
+            checkbox = CheckBoxDyslexia ()#(size_hint_x=None, width=300)
             self.layout_diagnosis.add_widget(lbl_type)
             self.layout_diagnosis.add_widget(checkbox)
 
@@ -220,15 +220,27 @@ class DyslexiaApp(App):
         if (task_name=='s'): #single task
             mistake_index = screen_dyslexia.dyslexia_single_mistakes['initials'].index(spinner_inst.text)
             if (column_name=='1'): #first column
+                if (screen_dyslexia.answers_single1[word_index]>=0):
+                        prev_selection = screen_dyslexia.answers_single1[word_index]
+                        screen_dyslexia.answers_single_summary[prev_selection] -= 1
                 screen_dyslexia.answers_single1[word_index] = mistake_index
             else: #selcond column
+                if (screen_dyslexia.answers_single2[word_index] >= 0):
+                    prev_selection = screen_dyslexia.answers_single2[word_index]
+                    screen_dyslexia.answers_single_summary[prev_selection] -= 1
                 screen_dyslexia.answers_single2[word_index] = mistake_index
             screen_dyslexia.answers_single_summary[mistake_index] += 1
         elif (task_name=='t'): #tefel task
             mistake_index = screen_dyslexia.dyslexia_tefel_mistakes['initials'].index(spinner_inst.text)
             if (column_name=='1'): #first column
+                if (screen_dyslexia.answers_tefel1[word_index] >= 0):
+                    prev_selection = screen_dyslexia.answers_tefel1[word_index]
+                    screen_dyslexia.answers_tefel_summary[prev_selection] -= 1
                 screen_dyslexia.answers_tefel1[word_index] = mistake_index
             else: #selcond column
+                if (screen_dyslexia.answers_tefel2[word_index] >= 0):
+                    prev_selection = screen_dyslexia.answers_tefel1[word_index]
+                    screen_dyslexia.answers_tefel_summary[prev_selection] -= 1
                 screen_dyslexia.answers_tefel2[word_index] = mistake_index
             screen_dyslexia.answers_tefel_summary[mistake_index] += 1
 
