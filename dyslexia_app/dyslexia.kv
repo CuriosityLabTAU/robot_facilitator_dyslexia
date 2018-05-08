@@ -54,6 +54,9 @@
 
         FloatLayout:
             size: root.width, root.height
+            pos: 0,0
+
+
             FloatLayout:
                 ScrollView:
                     id: scroll_content
@@ -64,7 +67,13 @@
                     disables: False
                     scroll_type: ['bars','content']
 
-
+            FloatLayout:
+                LabelDyslexia:
+                    text: '   הרזע'
+                    size_hint_y: None
+                    pos: 0, root.height - self.height
+                    height: '29sp'
+                    bcolor: 0,0,1,1
 
 
 

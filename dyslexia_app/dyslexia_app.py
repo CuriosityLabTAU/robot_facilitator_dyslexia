@@ -105,10 +105,11 @@ class ScreenDyslexia (Screen):
     def create_task_grid(self, task_name):
         # Create GridLayoutDyslexia inst that will be used whenever the single tab  or the tegel tab is pressed is pressed.
         # task_name = 'single' / 'tefel'
-        lbl_head0 = LabelHeadingDyslexia(text='(שי םא) ףסונ האיגש גוס')
-        lbl_head1 = LabelHeadingDyslexia(text='האיגש גוס')
-        lbl_head2 = LabelHeadingDyslexia(text='הבוגת')
-        lbl_head3 = LabelHeadingDyslexia(text='הלימ')
+        lbl_head0 = LabelHeadingDyslexia(text='הרזע')
+        lbl_head1 = LabelHeadingDyslexia(text='?תפסונ האיגש')
+        lbl_head2 = LabelHeadingDyslexia(text='האיגש גוס')
+        lbl_head3 = LabelHeadingDyslexia(text='הבוגת')
+        lbl_head4 = LabelHeadingDyslexia(text='הלימ')
 
         if (task_name=='single'):
             self.layout_single = GridLayoutDyslexia()
@@ -119,6 +120,7 @@ class ScreenDyslexia (Screen):
             self.layout_single.add_widget(lbl_head1)
             self.layout_single.add_widget(lbl_head2)
             self.layout_single.add_widget(lbl_head3)
+            self.layout_single.add_widget(lbl_head4)
             prefix = 's'
         elif (task_name=='tefel'):
             self.layout_tefel = GridLayoutDyslexia()
@@ -129,6 +131,7 @@ class ScreenDyslexia (Screen):
             self.layout_tefel.add_widget(lbl_head1)
             self.layout_tefel.add_widget(lbl_head2)
             self.layout_tefel.add_widget(lbl_head3)
+            self.layout_tefel.add_widget(lbl_head4)
             prefix = 't'
 
         for i in range(self.task_length):
@@ -136,34 +139,44 @@ class ScreenDyslexia (Screen):
             response_i = self.dyslexia_data['response'][i]
             #print(word_i, response_i)
             lbl_response = LabelDyslexia(text=response_i[::-1]) #reverse the string
-            lbl_word = LabelDyslexia(id='word' + str(i), text=word_i[::-1]) #reverse the string
+            lbl_word = LabelDyslexia(id='word' + str(i), text= word_i[::-1] + ' .'+ str(i)) #reverse the string
             # btn_response = Button(text=str(response_i), size_hint_y=None, height=40)
             spinner_values = self.dyslexia_mistakes['initials']
-            spinner1 = SpinnerDyslexia(id=prefix + '1_' + str(i),
-                                       sync_height=True,
-                                       text='האיגש גוס',
-                                       values=spinner_values,
-                                       option_cls=SpinnerOptionDyslexia)
-            spinner2 = SpinnerDyslexia(id=prefix + '2_' + str(i),
-                                       sync_height=True,
-                                       text='האיגש גוס',
-                                       values=spinner_values,
-                                       option_cls=SpinnerOptionDyslexia)
+            if (response_i=='1'):  #the response in the test is corrent
+                spinner1 = LabelDyslexia(text='')
+                spinner2 = LabelDyslexia(text='')
+                btn_question = LabelDyslexia(text='')
+
+            else: #the response in the dyslexia test is incorrect
+                spinner1 = SpinnerDyslexia(id=prefix + '1_' + str(i),
+                                           sync_height=True,
+                                           text='י/רחב',
+                                           values=spinner_values,
+                                           option_cls=SpinnerOptionDyslexia)
+                spinner2 = SpinnerDyslexia(id=prefix + '2_' + str(i),
+                                           sync_height=True,
+                                           text='י/רחב',
+                                           values=spinner_values,
+                                           option_cls=SpinnerOptionDyslexia)
+                btn_question = ButtonDyslexia (id=prefix + str(i),
+                                               text='?')
+
             if (task_name == 'single'):
+                self.layout_single.add_widget(btn_question)
                 self.layout_single.add_widget(spinner2)
                 self.layout_single.add_widget(spinner1)
                 self.layout_single.add_widget(lbl_response)
                 self.layout_single.add_widget(lbl_word)
             elif (task_name == 'tefel'):
+                self.layout_tefel.add_widget(btn_question)
                 self.layout_tefel.add_widget(spinner2)
                 self.layout_tefel.add_widget(spinner1)
                 self.layout_tefel.add_widget(lbl_response)
                 self.layout_tefel.add_widget(lbl_word)
 
-
     def create_summary_grid(self):
         #create the summary gird layout that includes single and tefel
-        self.layout_summary = GridLayoutDyslexia()
+        self.layout_summary = GridLayoutDyslexia(cols=4)
         # add single summary:
         self.add_summary_data(':תודדוב םוכיס',self.dyslexia_single_mistakes,self.single_mistakes_length,self.answers_single_summary)
         #add tefel summary:
@@ -174,7 +187,7 @@ class ScreenDyslexia (Screen):
 
         lbl_head0 = LabelHeadingDyslexia(text='לכה ךס')
         lbl_head1 = LabelHeadingDyslexia(text='דודיק')
-        lbl_head2 = LabelHeadingDyslexia(text='תועט גוס')
+        lbl_head2 = LabelHeadingDyslexia(text='האיגש גוס')
         lbl_head3 = LabelHeadingDyslexia(text=title_text)
         self.layout_summary.add_widget(lbl_head0)
         self.layout_summary.add_widget(lbl_head1)

@@ -11,7 +11,7 @@ from kivy.lang import Builder
 Builder.load_string("""
 <SpinnerOptionDyslexia>:
     font_name: "fonts/the_font.ttf"
-    font_size: 20
+    font_size: '18sp'
     height: '40px'
 """)
 

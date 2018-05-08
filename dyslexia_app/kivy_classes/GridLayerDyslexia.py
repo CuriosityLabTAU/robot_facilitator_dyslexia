@@ -14,7 +14,7 @@ Builder.load_string("""
             pos: self.pos
             size: self.size
     id: gridlayout
-    cols: 4
+    cols: 5
     rows: 200
     spacing: 2
     size_hint_y: None
