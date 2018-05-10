@@ -22,7 +22,28 @@ except NameError:
 
 def get_single_task ():
     dyslexia_single = {'word':[],
-                       'response':[]}
+                       'response':[],
+                       'answer1':[],
+                       'answer2':[],
+                       'm_0':[],
+                       'm_1':[],
+                       'm_2':[],
+                       'm_3':[],
+                       'm_4':[],
+                       'm_5':[],
+                       'm_6':[],
+                       'm_7':[],
+                       'm_8':[],
+                       'm_9':[],
+                       'm_10':[],
+                       'm_11':[],
+                       'm_12':[],
+                       'm_13':[],
+                       'm_14':[],
+                       'm_15':[],
+                       'm_16':[],
+                       'm_17':[]
+                       }
 
     # Setup the Sheets API
     SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly'
@@ -35,7 +56,7 @@ def get_single_task ():
 
     # Call the Sheets API
     SPREADSHEET_ID = '1xtlwZ2EGO18lPJCNV2IWpvhSFblzFLyyHdka01mAdIs'
-    RANGE_NAME = 'single!B3:X'
+    RANGE_NAME = 'single1!B3:X'
     result = service.spreadsheets().values().get(spreadsheetId=SPREADSHEET_ID,
                                                  range=RANGE_NAME).execute()
     values = result.get('values', [])
@@ -48,7 +69,26 @@ def get_single_task ():
             print('%s, %s' % (row[0], row[1]))
             dyslexia_single['word'].append(row[0])
             dyslexia_single['response'].append(row[1])
-
+            dyslexia_single['answer1'].append(row[2])
+            dyslexia_single['answer2'].append(row[3])
+            dyslexia_single['m_0'].append(row[4])
+            dyslexia_single['m_1'].append(row[5])
+            dyslexia_single['m_2'].append(row[6])
+            dyslexia_single['m_3'].append(row[7])
+            dyslexia_single['m_4'].append(row[8])
+            dyslexia_single['m_5'].append(row[9])
+            dyslexia_single['m_6'].append(row[10])
+            dyslexia_single['m_7'].append(row[11])
+            dyslexia_single['m_8'].append(row[12])
+            dyslexia_single['m_9'].append(row[13])
+            dyslexia_single['m_10'].append(row[14])
+            dyslexia_single['m_11'].append(row[15])
+            dyslexia_single['m_12'].append(row[16])
+            dyslexia_single['m_13'].append(row[17])
+            dyslexia_single['m_14'].append(row[18])
+            dyslexia_single['m_15'].append(row[19])
+            dyslexia_single['m_16'].append(row[20])
+            dyslexia_single['m_17'].append(row[21])
     print(dyslexia_single)
 
     # Write JSON file
@@ -66,8 +106,27 @@ def get_single_task ():
 
 
 def get_tefel_task ():
-    dyslexia_tefel = {'word':[],
-                       'response':[]}
+    dyslexia_tefel = {'word': [],
+                      'response': [],
+                      'answer1': [],
+                      'm_0': [],
+                      'm_1': [],
+                      'm_2': [],
+                      'm_3': [],
+                      'm_4': [],
+                      'm_5': [],
+                      'm_6': [],
+                      'm_7': [],
+                      'm_8': [],
+                      'm_9': [],
+                      'm_10': [],
+                      'm_11': [],
+                      'm_12': [],
+                      'm_13': [],
+                      'm_14': [],
+                      'm_15': [],
+                      'm_16': []
+                      }
 
     # Setup the Sheets API
     SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly'
@@ -80,7 +139,7 @@ def get_tefel_task ():
 
     # Call the Sheets API
     SPREADSHEET_ID = '1xtlwZ2EGO18lPJCNV2IWpvhSFblzFLyyHdka01mAdIs'
-    RANGE_NAME = 'tefel!A2:B'
+    RANGE_NAME = 'tefel1!A2:U'
     result = service.spreadsheets().values().get(spreadsheetId=SPREADSHEET_ID,
                                                  range=RANGE_NAME).execute()
     values = result.get('values', [])
@@ -93,6 +152,25 @@ def get_tefel_task ():
             print('%s, %s' % (row[0], row[1]))
             dyslexia_tefel['word'].append(row[0])
             dyslexia_tefel['response'].append(row[1])
+            dyslexia_tefel['answer1'].append(row[2])
+            dyslexia_tefel['m_0'].append(row[3])
+            dyslexia_tefel['m_1'].append(row[4])
+            dyslexia_tefel['m_2'].append(row[5])
+            dyslexia_tefel['m_3'].append(row[6])
+            dyslexia_tefel['m_4'].append(row[7])
+            dyslexia_tefel['m_5'].append(row[8])
+            dyslexia_tefel['m_6'].append(row[9])
+            dyslexia_tefel['m_7'].append(row[10])
+            dyslexia_tefel['m_8'].append(row[11])
+            dyslexia_tefel['m_9'].append(row[12])
+            dyslexia_tefel['m_10'].append(row[13])
+            dyslexia_tefel['m_11'].append(row[14])
+            dyslexia_tefel['m_12'].append(row[15])
+            dyslexia_tefel['m_13'].append(row[16])
+            dyslexia_tefel['m_14'].append(row[17])
+            dyslexia_tefel['m_15'].append(row[18])
+            dyslexia_tefel['m_16'].append(row[19])
+
 
     print(dyslexia_tefel)
 

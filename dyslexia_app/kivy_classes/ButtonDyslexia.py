@@ -12,6 +12,7 @@ Builder.load_string("""
   height: '40dp'
   font_size: '18sp'
   font_name: 'fonts/the_font.ttf'
+  on_press: app.press_help_button(self)
 """)
 
 class ButtonDyslexia(Button):

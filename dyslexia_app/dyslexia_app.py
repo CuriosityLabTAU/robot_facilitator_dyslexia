@@ -256,9 +256,18 @@ class DyslexiaApp(App):
                     screen_dyslexia.answers_tefel_summary[prev_selection] -= 1
                 screen_dyslexia.answers_tefel2[word_index] = mistake_index
             screen_dyslexia.answers_tefel_summary[mistake_index] += 1
-
         print(task_name, column_name, word_index, selection_id, mistake_index)
 
+
+    def press_help_button(self,btn_inst):
+        print("rinat",btn_inst.id)
+        self.screen_manager.get_screen('ScreenDyslexia').ids['help_widget'].opacity = 1
+        print('help_widget', self.screen_manager.get_screen('ScreenDyslexia').ids['help_widget'].pos)
+
+    def press_close_help(self):
+        print("press_close_help")
+        self.screen_manager.get_screen('ScreenDyslexia').ids['help_widget'].opacity = 0
+        #self.screen_manager.get_screen('ScreenDyslexia').ids['help_widget'].pos_hint= {'center_x': 0.5, 'y': 0.2}
 
     def change_tab(self, tab_name):
         # student clicked on one of the menu tabs ('single'/'tefel'/'summary')
@@ -280,6 +289,8 @@ class DyslexiaApp(App):
             self.current_tabe = 'diagnosis'
             self.screen_manager.get_screen('ScreenDyslexia').ids['scroll_content'].clear_widgets()
             self.screen_manager.get_screen('ScreenDyslexia').ids['scroll_content'].add_widget(self.screen_manager.get_screen('ScreenDyslexia').layout_diagnosis)
+
+
 
 if __name__ == "__main__":
     DyslexiaApp().run()  # the call is from main.py
