@@ -139,7 +139,7 @@ class ScreenDyslexia (Screen):
             response_i = self.dyslexia_data['response'][i]
             #print(word_i, response_i)
             lbl_response = LabelDyslexia(text=response_i[::-1]) #reverse the string
-            lbl_word = LabelDyslexia(id='word' + str(i), text= word_i[::-1] + ' .'+ str(i)) #reverse the string
+            lbl_word = LabelDyslexia(id='word' + str(i), text= word_i[::-1] + ' .'+ str(i+1)) #reverse the string
             # btn_response = Button(text=str(response_i), size_hint_y=None, height=40)
             spinner_values = self.dyslexia_mistakes['initials']
             if (response_i=='1'):  #the response in the test is corrent
@@ -235,12 +235,12 @@ class DyslexiaApp(App):
             if (column_name=='1'): #first column
                 if (screen_dyslexia.answers_single1[word_index]>=0):
                         prev_selection = screen_dyslexia.answers_single1[word_index]
-                        screen_dyslexia.answers_single_summary[prev_selection] -= 1
+                        screen_dyslexia.answers_single_summary[int(prev_selection)] -= 1
                 screen_dyslexia.answers_single1[word_index] = mistake_index
             else: #selcond column
                 if (screen_dyslexia.answers_single2[word_index] >= 0):
                     prev_selection = screen_dyslexia.answers_single2[word_index]
-                    screen_dyslexia.answers_single_summary[prev_selection] -= 1
+                    screen_dyslexia.answers_single_summary[int(prev_selection)] -= 1
                 screen_dyslexia.answers_single2[word_index] = mistake_index
             screen_dyslexia.answers_single_summary[mistake_index] += 1
         elif (task_name=='t'): #tefel task
@@ -248,12 +248,12 @@ class DyslexiaApp(App):
             if (column_name=='1'): #first column
                 if (screen_dyslexia.answers_tefel1[word_index] >= 0):
                     prev_selection = screen_dyslexia.answers_tefel1[word_index]
-                    screen_dyslexia.answers_tefel_summary[prev_selection] -= 1
+                    screen_dyslexia.answers_tefel_summary[int(prev_selection)] -= 1
                 screen_dyslexia.answers_tefel1[word_index] = mistake_index
             else: #selcond column
                 if (screen_dyslexia.answers_tefel2[word_index] >= 0):
                     prev_selection = screen_dyslexia.answers_tefel1[word_index]
-                    screen_dyslexia.answers_tefel_summary[prev_selection] -= 1
+                    screen_dyslexia.answers_tefel_summary[int(prev_selection)] -= 1
                 screen_dyslexia.answers_tefel2[word_index] = mistake_index
             screen_dyslexia.answers_tefel_summary[mistake_index] += 1
         print(task_name, column_name, word_index, selection_id, mistake_index)
@@ -261,8 +261,34 @@ class DyslexiaApp(App):
 
     def press_help_button(self,btn_inst):
         print("rinat",btn_inst.id)
+        word_index = int(btn_inst.id[1:])
+        print('word_index=',word_index)
+        task = btn_inst.id[0] #s/t
+        message1 = 'message1'
+        message2 = 'message2'
+        if (task=='s'):
+            answer1 = int(self.screen_manager.get_screen('ScreenDyslexia').answers_single1[word_index])
+            answer2 = int(self.screen_manager.get_screen('ScreenDyslexia').answers_single2[word_index])
+            print('answer1 2', answer1, answer2)
+            if (answer1>=0):
+                message1 = self.screen_manager.get_screen('ScreenDyslexia').dyslexia_single_data['m_'+str(answer1)][word_index]
+            if (answer2>=0):
+                message2 = self.screen_manager.get_screen('ScreenDyslexia').dyslexia_single_data['m_'+str(answer2)][word_index]
+
+        elif (task=='t'):
+            answer1 = int(self.screen_manager.get_screen('ScreenDyslexia').answers_single1[word_index])
+            answer2 = int(self.screen_manager.get_screen('ScreenDyslexia').answers_single2[word_index])
+            if (answer1>=0):
+                message1 = self.screen_manager.get_screen('ScreenDyslexia').dyslexia_tefel_data['m_'+str(answer1)][word_index]
+            if (answer2>=0):
+                message2 = self.screen_manager.get_screen('ScreenDyslexia').dyslexia_tefel_data['m_'+str(answer2)][word_index]
+
+        self.screen_manager.get_screen('ScreenDyslexia').ids['help_label'].text = message1 + message2
         self.screen_manager.get_screen('ScreenDyslexia').ids['help_widget'].opacity = 1
         print('help_widget', self.screen_manager.get_screen('ScreenDyslexia').ids['help_widget'].pos)
+
+        self.screen_manager.get_screen('ScreenDyslexia').dyslexia_tefel_data
+
 
     def press_close_help(self):
         print("press_close_help")

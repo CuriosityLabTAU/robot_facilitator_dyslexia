@@ -12,6 +12,8 @@ Builder.load_string("""
   height: '40dp'
   font_size: '18sp'
   font_name: 'fonts/the_font.ttf'
+  text_size: self.width * 0.87, self.height
+  halign: 'right'
   canvas.before:
     Color:
       rgba: self.bcolor
