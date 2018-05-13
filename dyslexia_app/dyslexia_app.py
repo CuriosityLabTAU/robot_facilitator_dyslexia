@@ -12,6 +12,27 @@ from kivy.properties import ListProperty, ObjectProperty, BooleanProperty
 class MyScreenManager(ScreenManager):
     the_app = None
 
+
+
+class ScreenRegister (Screen):
+    the_app = None
+
+    def __init__(self, the_app):
+        self.the_app = the_app
+        super(Screen, self).__init__()
+        self.ids["tablet_id"].bind(text=self.ids["tablet_id"].on_text_change)
+        self.ids["group_id"].bind(text=self.ids["group_id"].on_text_change)
+
+    def start_interaction(self):
+        print(self.ids)
+
+    def data_received(self, data):
+        print ("ScreenRegister: data_received", data)
+        # self.the_app.screen_manager.current = 'ScreenAudience'
+        print("end")
+        #self.ids['callback_label'].text = data
+
+
 class ScreenDyslexia (Screen):
     answers_single1 = []
     answers_single2 = []
@@ -90,7 +111,7 @@ class ScreenDyslexia (Screen):
 
 
     def create_diagnosis_grid(self):
-        self.layout_diagnosis = GridLayoutDyslexia(cols=2)
+        self.layout_diagnosis = GridLayoutDyslexia2(cols=2)
         lbl_head1 = LabelHeadingDyslexia(text='הריחב') #,size_hint_x=None, width=300)
         lbl_head0 = LabelHeadingDyslexia(text='היסקלסיד', halign='right')
         self.layout_diagnosis.add_widget(lbl_head0)
@@ -174,16 +195,53 @@ class ScreenDyslexia (Screen):
                 self.layout_tefel.add_widget(lbl_response)
                 self.layout_tefel.add_widget(lbl_word)
 
-    def create_summary_grid(self):
-        #create the summary gird layout that includes single and tefel
-        self.layout_summary = GridLayoutDyslexia(cols=4)
+    def create_single_summary_grid(self):
+        # create the summary gird layout that includes single and tefel
+        self.layout_summary = GridLayoutDyslexia4()
         # add single summary:
-        self.add_summary_data(':תודדוב םוכיס',self.dyslexia_single_mistakes,self.single_mistakes_length,self.answers_single_summary)
-        #add tefel summary:
-        self.add_summary_data(':לפת םוכיס',self.dyslexia_tefel_mistakes,self.tefel_mistakes_length,self.answers_tefel_summary)
+        self.add_summary_data(':תודדוב םוכיס', self.dyslexia_single_mistakes, self.single_mistakes_length,
+                              self.answers_single_summary)
+
+        self.add_summary_summary('37%','','תויועט זוחא','')
+        self.add_summary_summary('4','','םילוכיש','')
+        self.add_summary_summary( '7','', 'קאבק','')
+        self.add_summary_summary('7', '', 'ילאוזיו', '')
+        self.add_summary_summary('0', '', 'םינוקית', '')
+
+        self.add_summary_summary('0', '', 'קאבק כ"הס', '?קאבק םאה')
+        self.add_summary_summary('0', '', 'תנ ילב קאבק', '')
+        self.add_summary_summary('0', '', 'בקשק ילבו תנ ילב קאבק', '')
+        self.add_summary_summary('0', '', 'תנ', '')
+
+        self.add_summary_summary('0', '', 'ענ', 'LPD םאה')
+        self.add_summary_summary('0', '', 'ךותב תודידנ כהס', '')
+        self.add_summary_summary('0', '', 'תולפכהו תודידנ', '')
+
+        self.add_summary_summary('0', '', 'יבשק', 'יבשק םאה')
+        self.add_summary_summary('0', '', 'בקשק תוחפ יבשק', '')
+
+        self.add_summary_summary('0', '', 'רחא ילאוזיו', 'רפאב/ילאוזיו םאה')
+
+
+    def create_tefel_summary_grid(self):
+        # create the summary gird layout that includes single and tefel
+        self.layout_summary = GridLayoutDyslexia4()
+        # add tefel summary:
+        self.add_summary_data(':לפת םוכיס', self.dyslexia_tefel_mistakes, self.tefel_mistakes_length,
+                              self.answers_tefel_summary)
+
+    def add_summary_summary(self,txt1,txt2,txt3,txt4):
+        lbl_head0 = LabelHeadingDyslexia(text=txt1, bcolor=(1,1,1,1))
+        lbl_head1 = LabelHeadingDyslexia(text=txt2, bcolor=(1,1,1,1))
+        lbl_head2 = LabelHeadingDyslexia(text=txt3, bcolor=(1,1,1,1))
+        lbl_head3 = LabelHeadingDyslexia(text=txt4, bcolor=(1,1,1,1))
+        self.layout_summary.add_widget(lbl_head0)
+        self.layout_summary.add_widget(lbl_head1)
+        self.layout_summary.add_widget(lbl_head2)
+        self.layout_summary.add_widget(lbl_head3)
+
 
     def add_summary_data(self, title_text ,dyslexia_mistakes, mistakes_length,answers_summary):
-
 
         lbl_head0 = LabelHeadingDyslexia(text='לכה ךס')
         lbl_head1 = LabelHeadingDyslexia(text='דודיק')
@@ -193,7 +251,6 @@ class ScreenDyslexia (Screen):
         self.layout_summary.add_widget(lbl_head1)
         self.layout_summary.add_widget(lbl_head2)
         self.layout_summary.add_widget(lbl_head3)
-
 
         for i in range(mistakes_length):
 
@@ -215,11 +272,89 @@ class ScreenDyslexia (Screen):
 class DyslexiaApp(App):
     def build(self):
         self.the_app = self
+        self.basic_server_ip = '192.168.0.10'
+        self.server_ip_end = 0
         self.screen_manager = MyScreenManager()
         screen_dyslexia = ScreenDyslexia(self)
+        screen_register = ScreenRegister(self)
         self.screen_manager.add_widget(screen_dyslexia)
-        self.screen_manager.current = 'ScreenDyslexia'
+        self.screen_manager.add_widget(screen_register)
+        self.screen_manager.current = 'ScreenDyslexia'  #'ScreenRegister'
+
+        self.try_connection()
         return self.screen_manager
+
+    # ==== communicatoin to twisted server  KC: KivyClient KL: KivyLogger=====
+    def try_connection(self):
+        server_ip = self.basic_server_ip + str(self.server_ip_end)
+        KC.start(the_parents=[self], the_ip=server_ip)  # 127.0.0.1
+        KL.start(mode=[DataMode.file, DataMode.communication, DataMode.ros], pathname=self.user_data_dir,
+                 the_ip=server_ip)
+
+    def failed_connection(self):
+        self.server_ip_end += 1
+        if self.server_ip_end < 9:
+            self.try_connection()
+
+    def success_connection(self):
+        self.server_ip_end = 99
+        # self.screen_manager.current = 'Screen2'
+
+    def on_connection(self):
+        KL.log.insert(action=LogAction.data, obj='RobotatorApp', comment='start')
+        print("the client status on_connection ", KC.client.status)
+        if (KC.client.status == True):
+            self.screen_manager.get_screen('ScreenRegister').ids['callback_label'].text = 'connected'
+
+    def register_tablet(self):
+        tablet_id = self.screen_manager.current_screen.ids['tablet_id'].text
+        group_id = self.screen_manager.current_screen.ids['group_id'].text
+        message = {'tablet_to_manager': {'action': 'register_tablet',
+                                         'parameters': {'group_id': group_id, 'tablet_id': tablet_id}}}
+        message_str = str(json.dumps(message))
+        print("register_tablet", message_str)
+        KC.client.send_message(message_str)
+
+    def data_received(self, data):
+        print ("robotator_app: data_received", data)
+        self.screen_manager.get_screen('ScreenRegister').ids['callback_label'].text = data
+        try:
+            json_data = [json.loads(data)]
+        except:
+            json_data = []
+            spl = data.split('}{')
+            print(spl)
+            for k in range(0, len(spl)):
+                the_msg = spl[k]
+                if k > 0:
+                    the_msg = '{' + the_msg
+                if k < (len(spl) - 1):
+                    the_msg = the_msg + '}'
+                json_msg = json.loads(the_msg)
+                json_data.append(json_msg)
+                # print("data_received err", sys.exc_info())
+
+        for data in json_data:
+            print("data['action']", data['action'])
+            if (data['action'] == 'registration_complete'):
+                self.screen_manager.get_screen('ScreenRegister').data_received(data)
+                print("registration_complete")
+
+            if (data['action'] == 'show_screen'):
+                print(data)
+                self.screen_manager.current = data['screen_name']
+
+                if 'role' in data:
+                    self.screen_manager.current_screen.update_role_bias(role=data['role'], bias=int(data['bias']))
+
+            if (data['action'] == 'start_timer'):
+                self.screen_manager.current_screen.ids['timer_time'].start_timer(int(data['seconds']))
+
+            if data['action'] == 'set_widget_text':
+                self.screen_manager.current_screen.ids[data['widget_id']].text = data['text']
+
+
+    # ==========================================================================
 
     def mistake_type_selected(self,spinner_inst):
         # the student picked mistake type. update the relevant variables
@@ -306,13 +441,20 @@ class DyslexiaApp(App):
             self.current_tab = 'tefel'
             self.screen_manager.get_screen('ScreenDyslexia').ids['scroll_content'].clear_widgets()
             self.screen_manager.get_screen('ScreenDyslexia').ids['scroll_content'].add_widget(self.screen_manager.get_screen('ScreenDyslexia').layout_tefel)
-        elif (tab_name == 'summary'):
-            self.current_tabe = 'summary'
-            self.screen_manager.get_screen('ScreenDyslexia').create_summary_grid()
+        elif (tab_name == 'single_summary'):
+            self.current_tab = 'single_summary'
+            self.screen_manager.get_screen('ScreenDyslexia').create_single_summary_grid()
             self.screen_manager.get_screen('ScreenDyslexia').ids['scroll_content'].clear_widgets()
             self.screen_manager.get_screen('ScreenDyslexia').ids['scroll_content'].add_widget(self.screen_manager.get_screen('ScreenDyslexia').layout_summary)
+
+        elif (tab_name == 'tefel_summary'):
+            self.current_tab = 'tefel_summary'
+            self.screen_manager.get_screen('ScreenDyslexia').create_tefel_summary_grid()
+            self.screen_manager.get_screen('ScreenDyslexia').ids['scroll_content'].clear_widgets()
+            self.screen_manager.get_screen('ScreenDyslexia').ids['scroll_content'].add_widget(self.screen_manager.get_screen('ScreenDyslexia').layout_summary)
+
         elif (tab_name == 'diagnosis'):
-            self.current_tabe = 'diagnosis'
+            self.current_tab = 'diagnosis'
             self.screen_manager.get_screen('ScreenDyslexia').ids['scroll_content'].clear_widgets()
             self.screen_manager.get_screen('ScreenDyslexia').ids['scroll_content'].add_widget(self.screen_manager.get_screen('ScreenDyslexia').layout_diagnosis)
 
