@@ -54,20 +54,25 @@ class ManagerNode():
 
     def run_study(self):
         #start running the study
-        action1 = {"action": "wake_up"}
-        self.run_robot_behavior(action1)
-        action2 = {"action": "show_screen", "screen_name": "ScreenDyslexia", "tablets": [1, 2, 3, 4, 5]}
-        for tablet_id in action2['tablets']:
+        action = {"action": "wake_up"}
+        self.run_robot_behavior(action)
+        action = {"action": "show_screen", "screen_name": "ScreenDyslexia", "tablets": [1, 2, 3, 4, 5]}
+        for tablet_id in action['tablets']:
             try:
                 client_ip = self.tablets_ips[str(tablet_id)]
-                message = {'action': 'show_screen', 'client_ip': client_ip, 'screen_name': action2['screen_name']}
+                message = {'action': 'show_screen', 'client_ip': client_ip, 'screen_name': action['screen_name']}
                 self.tablet_publisher.publish(json.dumps(message))
             except:
                 print('not enough tablets')
-        action3 = {"action":"say_text_to_speech", "parameters": ["hello all, how are you today?"]}
+        # action3 = {"action":"say_text_to_speech", "parameters": ["hello all, how are you today?"]}
+        action3 = {"action": "wake_up"}
         self.run_robot_behavior(action3)
-        action4 = {"action": "rest"}
+        action4 = {'action': 'set_autonomous_state', 'parameters': ['solitary']}
         self.run_robot_behavior(action4)
+        action5 = {'action': 'play_audio_file', 'parameters': ['/home/nao/naoqi/sounds/dyslexia/introduction.wav']}
+        self.run_robot_behavior(action5)
+        action6 = {"action": "rest"}
+        self.run_robot_behavior(action6)
 
 
     def run_study_timer_out(self):

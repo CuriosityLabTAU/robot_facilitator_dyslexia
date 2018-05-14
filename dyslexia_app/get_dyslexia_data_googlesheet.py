@@ -47,10 +47,10 @@ def get_single_task ():
 
     # Setup the Sheets API
     SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly'
-    store = file.Storage('credentials.json')
+    store = file.Storage('googlesheet_jsons/credentials.json')
     creds = store.get()
     if not creds or creds.invalid:
-        flow = client.flow_from_clientsecrets('client_secret.json', SCOPES)
+        flow = client.flow_from_clientsecrets('googlesheet_jsons/client_secret.json', SCOPES)
         creds = tools.run_flow(flow, store)
     service = build('sheets', 'v4', http=creds.authorize(Http()))
 
@@ -92,14 +92,14 @@ def get_single_task ():
     print(dyslexia_single)
 
     # Write JSON file
-    with io.open('dyslexia_single.json', 'w', encoding='utf8') as outfile:
+    with io.open('googlesheet_jsons/dyslexia_single.json', 'w', encoding='utf8') as outfile:
         str_ = json.dumps(dyslexia_single,
                           indent=4, sort_keys=True,
                           separators=(',', ': '), ensure_ascii=False)
         outfile.write(to_unicode(str_))
 
     # Read JSON file
-    with open('dyslexia_single.json') as data_file:
+    with open('googlesheet_jsons/dyslexia_single.json') as data_file:
         data_loaded = json.load(data_file)
 
     print(dyslexia_single == data_loaded)
@@ -130,10 +130,10 @@ def get_tefel_task ():
 
     # Setup the Sheets API
     SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly'
-    store = file.Storage('credentials.json')
+    store = file.Storage('googlesheet_jsons/credentials.json')
     creds = store.get()
     if not creds or creds.invalid:
-        flow = client.flow_from_clientsecrets('client_secret.json', SCOPES)
+        flow = client.flow_from_clientsecrets('googlesheet_jsons/client_secret.json', SCOPES)
         creds = tools.run_flow(flow, store)
     service = build('sheets', 'v4', http=creds.authorize(Http()))
 
@@ -175,14 +175,14 @@ def get_tefel_task ():
     print(dyslexia_tefel)
 
     # Write JSON file
-    with io.open('dyslexia_tefel.json', 'w', encoding='utf8') as outfile:
+    with io.open('googlesheet_jsons/dyslexia_tefel.json', 'w', encoding='utf8') as outfile:
         str_ = json.dumps(dyslexia_tefel,
                           indent=4, sort_keys=True,
                           separators=(',', ': '), ensure_ascii=False)
         outfile.write(to_unicode(str_))
 
     # Read JSON file
-    with open('dyslexia_tefel.json') as data_file:
+    with open('googlesheet_jsons/dyslexia_tefel.json') as data_file:
         data_loaded = json.load(data_file)
 
     print(dyslexia_tefel == data_loaded)
@@ -193,10 +193,10 @@ def get_single_mistakes ():
 
     # Setup the Sheets API
     SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly'
-    store = file.Storage('credentials.json')
+    store = file.Storage('googlesheet_jsons/credentials.json')
     creds = store.get()
     if not creds or creds.invalid:
-        flow = client.flow_from_clientsecrets('client_secret.json', SCOPES)
+        flow = client.flow_from_clientsecrets('googlesheet_jsons/client_secret.json', SCOPES)
         creds = tools.run_flow(flow, store)
     service = build('sheets', 'v4', http=creds.authorize(Http()))
 
@@ -219,14 +219,14 @@ def get_single_mistakes ():
     print(dyslexia_single_mistakes)
 
     # Write JSON file
-    with io.open('dyslexia_single_mistakes.json', 'w', encoding='utf8') as outfile:
+    with io.open('googlesheet_jsons/dyslexia_single_mistakes.json', 'w', encoding='utf8') as outfile:
         str_ = json.dumps(dyslexia_single_mistakes,
                           indent=4, sort_keys=True,
                           separators=(',', ': '), ensure_ascii=False)
         outfile.write(to_unicode(str_))
 
     # Read JSON file
-    with open('dyslexia_single_mistakes.json') as data_file:
+    with open('googlesheet_jsons/dyslexia_single_mistakes.json') as data_file:
         data_loaded = json.load(data_file)
 
     print(dyslexia_single_mistakes == data_loaded)
@@ -237,10 +237,10 @@ def get_tefel_mistakes ():
 
     # Setup the Sheets API
     SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly'
-    store = file.Storage('credentials.json')
+    store = file.Storage('googlesheet_jsons/credentials.json')
     creds = store.get()
     if not creds or creds.invalid:
-        flow = client.flow_from_clientsecrets('client_secret.json', SCOPES)
+        flow = client.flow_from_clientsecrets('googlesheet_jsons/client_secret.json', SCOPES)
         creds = tools.run_flow(flow, store)
     service = build('sheets', 'v4', http=creds.authorize(Http()))
 
@@ -263,14 +263,14 @@ def get_tefel_mistakes ():
     print(dyslexia_tefel_mistakes)
 
     # Write JSON file
-    with io.open('dyslexia_tefel_mistakes.json', 'w', encoding='utf8') as outfile:
+    with io.open('googlesheet_jsons/dyslexia_tefel_mistakes.json', 'w', encoding='utf8') as outfile:
         str_ = json.dumps(dyslexia_tefel_mistakes,
                           indent=4, sort_keys=True,
                           separators=(',', ': '), ensure_ascii=False)
         outfile.write(to_unicode(str_))
 
     # Read JSON file
-    with open('dyslexia_tefel_mistakes.json') as data_file:
+    with open('googlesheet_jsons/dyslexia_tefel_mistakes.json') as data_file:
         data_loaded = json.load(data_file)
 
     print(dyslexia_tefel_mistakes == data_loaded)
@@ -280,10 +280,10 @@ def get_dyslexia_types ():
 
     # Setup the Sheets API
     SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly'
-    store = file.Storage('credentials.json')
+    store = file.Storage('googlesheet_jsons/credentials.json')
     creds = store.get()
     if not creds or creds.invalid:
-        flow = client.flow_from_clientsecrets('client_secret.json', SCOPES)
+        flow = client.flow_from_clientsecrets('googlesheet_jsons/client_secret.json', SCOPES)
         creds = tools.run_flow(flow, store)
     service = build('sheets', 'v4', http=creds.authorize(Http()))
 
@@ -305,14 +305,14 @@ def get_dyslexia_types ():
     print(dyslexia_types)
 
     # Write JSON file
-    with io.open('dyslexia_types.json', 'w', encoding='utf8') as outfile:
+    with io.open('googlesheet_jsons/dyslexia_types.json', 'w', encoding='utf8') as outfile:
         str_ = json.dumps(dyslexia_types,
                           indent=4, sort_keys=True,
                           separators=(',', ': '), ensure_ascii=False)
         outfile.write(to_unicode(str_))
 
     # Read JSON file
-    with open('dyslexia_types.json') as data_file:
+    with open('googlesheet_jsons/dyslexia_types.json') as data_file:
         data_loaded = json.load(data_file)
 
     print(dyslexia_types == data_loaded)
