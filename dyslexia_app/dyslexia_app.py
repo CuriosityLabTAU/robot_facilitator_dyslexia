@@ -25,8 +25,8 @@ class DyslexiaApp(App):
         screen_register = ScreenRegister(self)
         self.screen_manager.add_widget(screen_dyslexia)
         self.screen_manager.add_widget(screen_register)
-        #self.screen_manager.current = 'ScreenDyslexia'  #'ScreenRegister'
-        self.screen_manager.current = 'ScreenRegister'
+        self.screen_manager.current = 'ScreenDyslexia'  #'ScreenRegister'
+        #self.screen_manager.current = 'ScreenRegister'
         self.condition = 'robot'
 
         self.try_connection()

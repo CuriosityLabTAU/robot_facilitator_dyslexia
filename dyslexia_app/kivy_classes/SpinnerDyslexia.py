@@ -10,7 +10,7 @@ from kivy.lang import Builder
 from kivy.properties import ListProperty, ObjectProperty, BooleanProperty
 from SpinnerOptionDyslexia import SpinnerOptionDyslexia
 from kivy.uix.gridlayout import GridLayout
-#from kivy_communication.kivy_logger import LoggedSpinner
+from kivy_communication import logged_widgets
 #from kivy_communication import *
 
 
@@ -29,7 +29,8 @@ Builder.load_string("""
 
 """)
 
-class SpinnerDyslexia(Spinner):
+
+class SpinnerDyslexia(logged_widgets.LoggedSpinner):
     pass
 
 Factory.register('KivyB', module='SpinnerDyslexia')

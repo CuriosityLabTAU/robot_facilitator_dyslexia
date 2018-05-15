@@ -4,6 +4,7 @@ from kivy.uix.togglebutton import ToggleButton
 
 from kivy.factory import Factory
 from kivy.lang import Builder
+from kivy_communication import logged_widgets
 
 Builder.load_string("""
 <ButtonDyslexia>:
@@ -15,7 +16,7 @@ Builder.load_string("""
   on_press: app.press_help_button(self)
 """)
 
-class ButtonDyslexia(Button):
+class ButtonDyslexia(logged_widgets.LoggedButton):
   pass
 
 Factory.register('KivyB', module='ButtonDyslexia')
