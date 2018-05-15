@@ -9,8 +9,10 @@ from kivy_communication import *
 from dyslexia_screen_register import *
 
 from kivy.properties import ListProperty, ObjectProperty, BooleanProperty
-
-
+#solve to hebrew adding messages problem:
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 class ScreenDyslexia (Screen):
     answers_single1 = []
@@ -26,6 +28,7 @@ class ScreenDyslexia (Screen):
     tefel_mistakes_length = 0
     single_length = 0
     tefel_length = 0
+    current_tab = 'single'
 
     def __init__(self, the_app):
         #init the app. Set the tab to be single words
@@ -88,6 +91,34 @@ class ScreenDyslexia (Screen):
             type_i = self.dyslexia_types['dyslexia_types'][i]
             self.dyslexia_types['dyslexia_types'][i] = type_i[::-1]
 
+
+
+    def change_tab(self, tab_name):
+        # student clicked on one of the menu tabs ('single'/'tefel'/'summary')
+        print ('state:', 'screen_name', tab_name)
+        if (tab_name == 'single'):
+            self.current_tab = 'single'
+            self.ids['scroll_content'].clear_widgets()
+            self.ids['scroll_content'].add_widget(self.layout_single)
+        elif (tab_name == 'tefel'):
+            self.current_tab = 'tefel'
+            self.ids['scroll_content'].clear_widgets()
+            self.ids['scroll_content'].add_widget(self.layout_tefel)
+        elif (tab_name == 'single_summary'):
+            self.current_tab = 'single_summary'
+            self.create_single_summary_grid()
+            self.ids['scroll_content'].clear_widgets()
+            self.ids['scroll_content'].add_widget(self.layout_summary)
+        elif (tab_name == 'tefel_summary'):
+            self.current_tab = 'tefel_summary'
+            self.create_tefel_summary_grid()
+            self.ids['scroll_content'].clear_widgets()
+            self.ids['scroll_content'].add_widget(self.layout_summary)
+        elif (tab_name == 'diagnosis'):
+            self.current_tab = 'diagnosis'
+            self.ids['scroll_content'].clear_widgets()
+            self.ids['scroll_content'].add_widget(self.layout_diagnosis)
+
     def create_diagnosis_grid(self):
         self.layout_diagnosis = GridLayoutDyslexia2(cols=2)
         lbl_head1 = LabelHeadingDyslexia(text='הריחב') #,size_hint_x=None, width=300)
@@ -122,12 +153,12 @@ class ScreenDyslexia (Screen):
             self.layout_single.add_widget(lbl_head4)
             prefix = 's'
         elif (task_name=='tefel'):
-            self.layout_tefel = GridLayoutDyslexia()
+            self.layout_tefel = GridLayoutDyslexia4()
             self.dyslexia_data = self.dyslexia_tefel_data
             self.dyslexia_mistakes = self.dyslexia_tefel_mistakes
             self.task_length = self.tefel_length
             self.layout_tefel.add_widget(lbl_head0)
-            self.layout_tefel.add_widget(lbl_head1)
+            #self.layout_tefel.add_widget(lbl_head1)
             self.layout_tefel.add_widget(lbl_head2)
             self.layout_tefel.add_widget(lbl_head3)
             self.layout_tefel.add_widget(lbl_head4)
@@ -168,7 +199,7 @@ class ScreenDyslexia (Screen):
                 self.layout_single.add_widget(lbl_word)
             elif (task_name == 'tefel'):
                 self.layout_tefel.add_widget(btn_question)
-                self.layout_tefel.add_widget(spinner2)
+                #self.layout_tefel.add_widget(spinner2)
                 self.layout_tefel.add_widget(spinner1)
                 self.layout_tefel.add_widget(lbl_response)
                 self.layout_tefel.add_widget(lbl_word)
@@ -190,57 +221,6 @@ class ScreenDyslexia (Screen):
                               self.answers_tefel_summary)
         self.add_summary_summary_data(self.dyslexia_tefel_data, self.dyslexia_tefel_mistakes, self.tefel_mistakes_length,
                                       self.answers_tefel_summary)
-
-    def add_summary_summary_data(self, dyslexia_data, dyslexia_mistakes, mistakes_length, answers_summary):
-        correct_answers = dyslexia_data['response'].count('1')
-        total_answers = float(len(dyslexia_data['response']))
-        mistakes_percent = round(((total_answers - correct_answers) / total_answers) * 100, 1)
-        print("mistakes_percent", mistakes_percent, correct_answers, total_answers)
-        self.add_summary_summary_line(str(mistakes_percent)+'%', '', 'תויועט זוחא', '')
-        self.add_summary_summary_line(str(int(answers_summary[1]+answers_summary[2])), '', 'םילוכיש', '')
-
-        kbak = str(int(answers_summary[1]+answers_summary[7]+answers_summary[9]+answers_summary[11]+answers_summary[14]))
-        self.add_summary_summary_line(kbak,
-                                      '',
-                                      'קאבק',
-                                      '')
-        self.add_summary_summary_line(str(int(answers_summary[6]+answers_summary[8]+answers_summary[12]+answers_summary[13]))
-                                      , '',
-                                      'ילאוזיו'
-                                      , '')
-        fixes=0
-        for str_res in dyslexia_data['response']: #count the number of fixes the student made
-            if '1' in str_res and '1' != str_res:
-                fixes +=1
-        self.add_summary_summary_line(str(int(fixes)), '', 'םינוקית', '')
-
-        self.add_summary_summary_line('', 'םירגובמ ףס', '', '')
-
-        self.add_summary_summary_line(str(int(answers_summary[0])), '3', 'ריממ כ"הס', '?חטש םאה')
-
-        self.add_summary_summary_line('0', '2', 'קאבק כ"הס', '?קאבק םאה')
-        self.add_summary_summary_line('0', '2', 'תנ ילב קאבק', '')
-        self.add_summary_summary_line('0', '1', 'בקשק ילבו תנ ילב קאבק', '')
-        self.add_summary_summary_line('0', '1', 'תנ', '')
-
-        self.add_summary_summary_line('0', '2', 'ענ', 'LPD םאה')
-        self.add_summary_summary_line('0', '2', 'ךותב תודידנ כהס', '')
-        self.add_summary_summary_line('0', '2', 'תולפכהו תודידנ', '')
-
-        self.add_summary_summary_line('0', '2', 'יבשק', 'יבשק םאה')
-        self.add_summary_summary_line('0', '2', 'בקשק תוחפ יבשק', '')
-        self.add_summary_summary_line('0', '1', 'רחא ילאוזיו', 'רפאב/ילאוזיו םאה')
-
-
-    def add_summary_summary_line (self,txt1,txt2,txt3,txt4):
-        lbl_head0 = LabelHeadingDyslexia(text=txt1, bcolor=(228/256.0 , 196/256.0 , 253/256.0,1))
-        lbl_head1 = LabelHeadingDyslexia(text=txt2, bcolor=(228/256.0 , 196/256.0 , 253/256.0,1))
-        lbl_head2 = LabelHeadingDyslexia(text=txt3, bcolor=(228/256.0 , 196/256.0 , 253/256.0,1))
-        lbl_head3 = LabelHeadingDyslexia(text=txt4, bcolor=(228/256.0 , 196/256.0 , 253/256.0,1))
-        self.layout_summary.add_widget(lbl_head0)
-        self.layout_summary.add_widget(lbl_head1)
-        self.layout_summary.add_widget(lbl_head2)
-        self.layout_summary.add_widget(lbl_head3)
 
 
     def add_summary_data(self, title_text ,dyslexia_mistakes, mistakes_length,answers_summary):
@@ -272,31 +252,63 @@ class ScreenDyslexia (Screen):
             self.layout_summary.add_widget(lbl_mistake_id)
 
 
-    def change_tab(self, tab_name):
-        # student clicked on one of the menu tabs ('single'/'tefel'/'summary')
-        print ('state:', 'screen_name', tab_name)
-        if (tab_name == 'single'):
-            self.current_tab = 'single'
-            self.ids['scroll_content'].clear_widgets()
-            self.ids['scroll_content'].add_widget(self.layout_single)
-        elif (tab_name == 'tefel'):
-            self.current_tab = 'tefel'
-            self.ids['scroll_content'].clear_widgets()
-            self.ids['scroll_content'].add_widget(self.layout_tefel)
-        elif (tab_name == 'single_summary'):
-            self.current_tab = 'single_summary'
-            self.create_single_summary_grid()
-            self.ids['scroll_content'].clear_widgets()
-            self.ids['scroll_content'].add_widget(self.layout_summary)
-        elif (tab_name == 'tefel_summary'):
-            self.current_tab = 'tefel_summary'
-            self.create_tefel_summary_grid()
-            self.ids['scroll_content'].clear_widgets()
-            self.ids['scroll_content'].add_widget(self.layout_summary)
-        elif (tab_name == 'diagnosis'):
-            self.current_tab = 'diagnosis'
-            self.ids['scroll_content'].clear_widgets()
-            self.ids['scroll_content'].add_widget(self.layout_diagnosis)
+
+
+    def add_summary_summary_data(self, dyslexia_data, dyslexia_mistakes, mistakes_length, answers_summary):
+        correct_answers = dyslexia_data['response'].count('1')
+        total_answers = float(len(dyslexia_data['response']))
+        mistakes_percent = round(((total_answers - correct_answers) / total_answers) * 100, 1)
+        print("mistakes_percent", mistakes_percent, correct_answers, total_answers)
+        self.add_summary_summary_line(str(mistakes_percent)+'%', '', 'תויועט זוחא', '')
+        self.add_summary_summary_line(str(int(answers_summary[1]+answers_summary[2])), '', 'םילוכיש', '')
+
+        kbak = str(int(answers_summary[1]+answers_summary[7]+answers_summary[9]+answers_summary[11]+answers_summary[14]))
+        kbak1 = str(int(answers_summary[7] + answers_summary[9] + answers_summary[11] + answers_summary[14]))
+        kbak2 = str(int(answers_summary[7] + answers_summary[9] + answers_summary[11]))
+        kbak3 = str(int(answers_summary[1]))
+
+        self.add_summary_summary_line(kbak,
+                                      '',
+                                      'קאבק',
+                                      '')
+        self.add_summary_summary_line(str(int(answers_summary[6]+answers_summary[8]+answers_summary[12]+answers_summary[13]))
+                                      , '',
+                                      'ילאוזיו'
+                                      , '')
+        fixes=0
+        for str_res in dyslexia_data['response']: #count the number of fixes the student made
+            if '1' in str_res and '1' != str_res:
+                fixes +=1
+        self.add_summary_summary_line(str(int(fixes)), '', 'םינוקית', '')
+
+        self.add_summary_summary_line('', 'םירגובמ ףס', '', '')
+        if (self.current_tab=='single_summary'):
+            self.add_summary_summary_line(str(int(answers_summary[0])), '3', 'ריממ כ"הס', '?חטש םאה')
+
+        self.add_summary_summary_line(kbak, '2', 'קאבק כ"הס', '?קאבק םאה')
+        self.add_summary_summary_line(kbak1, '2', 'תנ ילב קאבק', '')
+        self.add_summary_summary_line(kbak2, '1', 'בקשקו תנ ילב קאבק', '')
+        self.add_summary_summary_line(kbak3, '1', 'תנ', '')
+
+        self.add_summary_summary_line(str(int(answers_summary[2])), '2', 'ענ', 'LPD םאה')
+        self.add_summary_summary_line(str(int(answers_summary[1]+answers_summary[2])), '2', 'ךותב תודידנ כהס', '')
+        self.add_summary_summary_line(str(int(answers_summary[1]+answers_summary[2]+answers_summary[10])), '2', 'תולפכהו תודידנ', '')
+
+        self.add_summary_summary_line(str(int(answers_summary[3])), '2', 'יבשק', 'יבשק םאה')
+        self.add_summary_summary_line(str(int(answers_summary[3]-answers_summary[14])), '2', 'בקשק תוחפ יבשק', '')
+        self.add_summary_summary_line(str(int(answers_summary[5]+answers_summary[6]+answers_summary[8]+answers_summary[12]+answers_summary[13])), '1', 'רחא ילאוזיו', 'רפאב/ילאוזיו םאה')
+
+
+    def add_summary_summary_line (self,txt1,txt2,txt3,txt4):
+        lbl_head0 = LabelHeadingDyslexia(text=txt1, bcolor=(228/256.0 , 196/256.0 , 253/256.0,1))
+        lbl_head1 = LabelHeadingDyslexia(text=txt2, bcolor=(228/256.0 , 196/256.0 , 253/256.0,1))
+        lbl_head2 = LabelHeadingDyslexia(text=txt3, bcolor=(228/256.0 , 196/256.0 , 253/256.0,1))
+        lbl_head3 = LabelHeadingDyslexia(text=txt4, bcolor=(228/256.0 , 196/256.0 , 253/256.0,1))
+        self.layout_summary.add_widget(lbl_head0)
+        self.layout_summary.add_widget(lbl_head1)
+        self.layout_summary.add_widget(lbl_head2)
+        self.layout_summary.add_widget(lbl_head3)
+
 
 
     def mistake_type_selected(self, spinner_inst):
@@ -342,15 +354,20 @@ class ScreenDyslexia (Screen):
         word_index = int(btn_inst.id[1:])
         print('word_index=', word_index)
         task = btn_inst.id[0]  # s/t
-        message1 = 'message1'
-        message2 = 'message2'
+        message1 = ''
+        message2 = ''
         if (task == 's'):
             answer1 = int(self.answers_single1[word_index])
             answer2 = int(self.answers_single2[word_index])
             print('answer1 2', answer1, answer2)
             if (answer1 >= 0):
-                message1 = self.dyslexia_single_data['m_' + str(answer1)][
-                    word_index]
+                print(self.dyslexia_single_mistakes['mistakes'][answer1])
+                message1 =   str(self.dyslexia_single_mistakes['mistakes'][answer1]) + str(' :םתרחב')
+                message1 = message1 + '\n'
+                feedback = self.dyslexia_single_data['m_' + str(answer1)][word_index]
+                if (feedback=='none'):
+                    feedback = 'לא, כדאי לבדוק שוב'
+                message1 = message1 + feedback[::-1]
             if (answer2 >= 0):
                 message2 = self.dyslexia_single_data['m_' + str(answer2)][
                     word_index]
