@@ -59,6 +59,11 @@ class DyslexiaApp(App):
         if (KC.client.status == True):
             self.screen_manager.get_screen('ScreenRegister').ids['callback_label'].text = 'connected'
 
+    def select_condition(self,spinner_inst):
+        print("select_condition",spinner_inst.text)
+        self.condition = spinner_inst.text
+        KL.log.insert(action=LogAction.data, obj='select_condition', comment=str(spinner_inst.text))
+
     def register_tablet(self):
         tablet_id = self.screen_manager.current_screen.ids['tablet_id'].text
         group_id = self.screen_manager.current_screen.ids['group_id'].text

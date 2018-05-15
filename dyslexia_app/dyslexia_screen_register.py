@@ -18,6 +18,7 @@ class ScreenRegister (Screen):
         super(Screen, self).__init__()
         self.ids["tablet_id"].bind(text=self.ids["tablet_id"].on_text_change)
         self.ids["group_id"].bind(text=self.ids["group_id"].on_text_change)
+        self.ids["subject_id"].bind(text=self.ids["subject_id"].on_text_change)
 
     def start_interaction(self):
         print(self.ids)

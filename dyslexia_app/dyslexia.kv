@@ -16,10 +16,11 @@
             color: 1,1,1,1
 
         Label:
-            pos: root.width * 0.1, root.height * 0.8
+            pos: root.width * 0.1, root.height * 0.6
             size: root.width * 0.2, root.height * 0.05
             id: tablet_id_label
-            text:"tablet id"
+            text:"טלבאט"
+            font_name: 'fonts/the_font.ttf'
             font_size: 16
             color: 1,1,1,1
 
@@ -28,14 +29,15 @@
             name: "tablet_id"
             font_size: 16
             text:"0"
-            pos: root.width * 0.3, root.height * 0.8
+            pos: root.width * 0.3, root.height * 0.6
             size: root.width * 0.2, root.height * 0.05
 
         Label:
             pos: root.width * 0.1, root.height * 0.7
             size: root.width * 0.2, root.height * 0.05
             id: group_id_label
-            text:"group id"
+            text:"הצובק"
+            font_name: 'fonts/the_font.ttf'
             font_size: 16
             color: 1,1,1,1
 
@@ -47,6 +49,42 @@
             pos: root.width * 0.3, root.height * 0.7
             size: root.width * 0.2, root.height * 0.05
 
+        Label:
+            pos: root.width * 0.1, root.height * 0.8
+            size: root.width * 0.2, root.height * 0.05
+            id: subject_id_label
+            text:"תוהז תדועת"
+            font_name: 'fonts/the_font.ttf'
+            font_size: 16
+            color: 1,1,1,1
+
+        LoggedTextInput:
+            id: subject_id
+            name: "subject_id"
+            font_size: 16
+            text:"0"
+            pos: root.width * 0.3, root.height * 0.8
+            size: root.width * 0.2, root.height * 0.05
+
+        Label:
+            pos: root.width * 0.1, root.height * 0.5
+            size: root.width * 0.2, root.height * 0.05
+            id: subject_id_label
+            text:"יוסינ יאנת"
+            font_name: 'fonts/the_font.ttf'
+            font_size: 16
+            color: 1,1,1,1
+
+        LoggedSpinner:
+            id: world_spinner
+            text: 'condition'
+            font_size: 16
+            background_color: 0.2,0.2,0.2,1
+            values: ('robot','tablet')
+            size: root.width * 0.15, root.height * 0.05
+            pos: root.width * 0.3, root.height * 0.5
+            on_text: app.select_condition(self)
+
         LoggedButton:
             id: tablet_id_btn
             name: 'register_tablet'
@@ -55,7 +93,7 @@
             text: 'register tablet'
             font_size: 16
             size: root.width * 0.15, root.height * 0.05
-            pos: root.width * 0.3, root.height * 0.6
+            pos: root.width * 0.3, root.height * 0.3
             on_press: app.register_tablet()
 
         Label:
