@@ -125,9 +125,10 @@ class ScreenDyslexia (Screen):
         lbl_head0 = LabelHeadingDyslexia(text='היסקלסיד', halign='right')
         self.layout_diagnosis.add_widget(lbl_head0)
         self.layout_diagnosis.add_widget(lbl_head1)
-        for dyslexia in self.dyslexia_types['dyslexia_types']:
+        for i, dyslexia in enumerate(self.dyslexia_types['dyslexia_types']):
             lbl_type = LabelDyslexia(text = dyslexia)
             checkbox = CheckBoxDyslexia ()#(size_hint_x=None, width=300)
+            checkbox.name = 'checkbox_' + str(i)
             self.layout_diagnosis.add_widget(lbl_type)
             self.layout_diagnosis.add_widget(checkbox)
 

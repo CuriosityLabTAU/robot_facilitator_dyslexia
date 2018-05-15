@@ -5,6 +5,7 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.spinner import Spinner, SpinnerOption
 from kivy.uix.checkbox import CheckBox
 from kivy.uix.button import Button
+from kivy.uix.togglebutton import ToggleButton
 from kivy_logger import WidgetLogger
 
 
@@ -23,6 +24,10 @@ class LoggedTextInput(WidgetLogger, TextInput):
 
 
 class LoggedButton(WidgetLogger, Button):
+    pass
+
+
+class LoggedToggleButton(WidgetLogger, ToggleButton):
     pass
 
 

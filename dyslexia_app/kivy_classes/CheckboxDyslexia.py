@@ -3,6 +3,8 @@ from kivy.properties import ListProperty
 
 from kivy.factory import Factory
 from kivy.lang import Builder
+from kivy_communication import logged_widgets
+
 
 Builder.load_string("""
 <CheckBoxDyslexia>:
@@ -19,7 +21,7 @@ Builder.load_string("""
       pos: self.pos
       size: self.size
 """)
-class CheckBoxDyslexia(CheckBox):
+class CheckBoxDyslexia(logged_widgets.LoggedCheckBox):
   bcolor = ListProperty([1, 1, 1 ,1])
 
 Factory.register('KivyB', module='CheckBoxDyslexia')
