@@ -42,7 +42,9 @@ def get_single_task ():
                        'm_14':[],
                        'm_15':[],
                        'm_16':[],
-                       'm_17':[]
+                       'm_17':[],
+                       'm_other':[],
+                       'm_none':[]
                        }
 
     # Setup the Sheets API
@@ -56,7 +58,7 @@ def get_single_task ():
 
     # Call the Sheets API
     SPREADSHEET_ID = '1xtlwZ2EGO18lPJCNV2IWpvhSFblzFLyyHdka01mAdIs'
-    RANGE_NAME = 'single1!B3:X'
+    RANGE_NAME = 'single1!B3:Y'
     result = service.spreadsheets().values().get(spreadsheetId=SPREADSHEET_ID,
                                                  range=RANGE_NAME).execute()
     values = result.get('values', [])
@@ -89,6 +91,8 @@ def get_single_task ():
             dyslexia_single['m_15'].append(row[19])
             dyslexia_single['m_16'].append(row[20])
             dyslexia_single['m_17'].append(row[21])
+            dyslexia_single['m_other'].append(row[22])
+            dyslexia_single['m_none'].append(row[23])
     print(dyslexia_single)
 
     # Write JSON file
@@ -125,7 +129,10 @@ def get_tefel_task ():
                       'm_13': [],
                       'm_14': [],
                       'm_15': [],
-                      'm_16': []
+                      'm_16': [],
+                      'm_17': [],
+                      'm_other': [],
+                      'm_none': []
                       }
 
     # Setup the Sheets API
@@ -139,7 +146,7 @@ def get_tefel_task ():
 
     # Call the Sheets API
     SPREADSHEET_ID = '1xtlwZ2EGO18lPJCNV2IWpvhSFblzFLyyHdka01mAdIs'
-    RANGE_NAME = 'tefel1!A2:U'
+    RANGE_NAME = 'tefel1!B3:X'
     result = service.spreadsheets().values().get(spreadsheetId=SPREADSHEET_ID,
                                                  range=RANGE_NAME).execute()
     values = result.get('values', [])
@@ -170,7 +177,9 @@ def get_tefel_task ():
             dyslexia_tefel['m_14'].append(row[17])
             dyslexia_tefel['m_15'].append(row[18])
             dyslexia_tefel['m_16'].append(row[19])
-
+            dyslexia_tefel['m_17'].append(row[20])
+            dyslexia_tefel['m_other'].append(row[21])
+            dyslexia_tefel['m_none'].append(row[22])
 
     print(dyslexia_tefel)
 

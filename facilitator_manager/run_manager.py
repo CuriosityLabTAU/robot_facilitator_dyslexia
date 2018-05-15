@@ -4,6 +4,7 @@ import rospy
 from std_msgs.msg import String
 import time
 from threading import Timer
+import threading
 
 class ManagerNode():
 
@@ -69,10 +70,11 @@ class ManagerNode():
         self.run_robot_behavior(action3)
         action4 = {'action': 'set_autonomous_state', 'parameters': ['solitary']}
         self.run_robot_behavior(action4)
+        #threading._sleep(4.0)
         action5 = {'action': 'play_audio_file', 'parameters': ['/home/nao/naoqi/sounds/dyslexia/introduction.wav']}
         self.run_robot_behavior(action5)
-        action6 = {"action": "rest"}
-        self.run_robot_behavior(action6)
+        #action6 = {"action": "rest"}
+        #self.run_robot_behavior(action6)
 
 
     def run_study_timer_out(self):
@@ -160,7 +162,7 @@ class ManagerNode():
 
         nao_message = {'action': 'say_text_to_speech', 'client_ip':client_ip,'parameters': ['register tablet', 'tablet_id',str(tablet_id), 'group id',str(group_id)]}
         self.robot_publisher.publish(json.dumps(nao_message))
-        if (len(self.tablets) == self.number_of_tablets):
+        if (len(self.tablets) >= self.number_of_tablets):
             print("two tablets are registered")
             for key,value in self.tablets_ips.viewitems():
                 print ("key, value", key, value)
@@ -171,10 +173,7 @@ class ManagerNode():
             self.run_study_timer = Timer(5.0, self.run_study_timer_out())
         print("finish register_tablet")
 
-    def scene1(self):
-        print("start")
-        str_wav = '/home/nao/wav_facilitator/r1.wav'
-        self.robot_play_audio_file(str_wav)
+
 
     def robot_play_audio_file (self, wav_path):
         nao_message = {'action': 'play_audio_file', 'parameters': [wav_path]}
@@ -203,6 +202,7 @@ class ManagerNode():
         if (action == 'register_tablet'):
             self.register_tablet(data_json['parameters']['tablet_id'], data_json['parameters']['group_id'],
                                  data_json['client_ip'])
+            {'action': 'play_audio_file', 'parameters': ['/home/nao/naoqi/sounds/dyslexia/s_w15_m7.wav']}
         elif (action == 'audience_done'):
             print("audience_done")
             #self.audience_done(data_json['parameters']['tablet_id'], data_json['parameters']['subject_id'],
@@ -210,6 +210,7 @@ class ManagerNode():
         elif ("agree" in action):
             pass
         else:
+            print('else', data.data)
             self.robot_publisher.publish(data.data)
         print ("finish manager callback_to_manager")
 

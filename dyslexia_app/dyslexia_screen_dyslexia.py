@@ -356,38 +356,76 @@ class ScreenDyslexia (Screen):
         task = btn_inst.id[0]  # s/t
         message1 = ''
         message2 = ''
+        file_name1 = ''
+        file_name2 = ''
         if (task == 's'):
             answer1 = int(self.answers_single1[word_index])
             answer2 = int(self.answers_single2[word_index])
             print('answer1 2', answer1, answer2)
             if (answer1 >= 0):
+                file_name_pre1 = 'M_' + str(answer1) #you choose ...
                 print(self.dyslexia_single_mistakes['mistakes'][answer1])
                 message1 =   str(self.dyslexia_single_mistakes['mistakes'][answer1]) + str(' :םתרחב')
                 message1 = message1 + '\n'
                 feedback = self.dyslexia_single_data['m_' + str(answer1)][word_index]
+                file_name_feedback1 = 's_w'+str(word_index)+'_m'+str(answer1)
                 if (feedback=='none'):
                     feedback = self.dyslexia_single_data['m_other'][word_index]
+                    file_name_feedback1 = 'other_response'+str(np.random.randint(1,8))
                 message1 = message1 + feedback[::-1]
             if (answer2 >= 0):
-                message2 = self.dyslexia_single_data['m_' + str(answer2)][
-                    word_index]
-
+                file_name_pre2 = 'M_'
+                message2 = self.dyslexia_single_data['m_' + str(answer2)][word_index]
+                message2 = message2 + '\n'
+                feedback = self.dyslexia_single_data['m_other'][word_index]
+                file_name_feedback2 = 's_'+str(answer2)
+                if (feedback=='none'):
+                    feedback = self.dyslexia_single_data['m_other'][word_index]
+                    file_name2 = 'other_response' + str(np.random.randint(1, 8))
+            if (answer1<0 and answer2<0):
+                feedback = self.dyslexia_single_data['m_none'][word_index][::-1]
+                message1 = feedback
+                file_name1 = 'other_response'+str(np.random.randint(1,8))
         elif (task == 't'):
-            answer1 = int(self.answers_single1[word_index])
-            answer2 = int(self.answers_single2[word_index])
+            answer1 = int(self.answers_tefel1[word_index])
             if (answer1 >= 0):
-                message1 = self.dyslexia_tefel_data['m_' + str(answer1)][
-                    word_index]
-            if (answer2 >= 0):
-                message2 = self.dyslexia_tefel_data['m_' + str(answer2)][
-                    word_index]
+                file_name_pre1 = 'M_' + str(answer1)  # you choose ...
+                print(self.dyslexia_single_mistakes['mistakes'][answer1])
+                message1 = str(self.dyslexia_tefe_mistakes['mistakes'][answer1]) + str(' :םתרחב')
+                message1 = message1 + '\n'
+                feedback = self.dyslexia_tefel_data['m_' + str(answer1)][word_index]
+                file_name_feedback1 = 's_w' + str(word_index) + '_m' + str(answer1)
+                if (feedback == 'none'):
+                    feedback = self.dyslexia_tefel_data['m_other'][word_index]
+                    file_name_feedback1 = 'other_response' + str(np.random.randint(1, 8))
+                message1 = message1 + feedback[::-1]
+            if (answer1 < 0): # did not choose anything
+                feedback = self.dyslexia_single_data['m_none'][word_index][::-1]
+                message1 = feedback
+                file_name1 = 'other_response' + str(np.random.randint(1, 8))
 
-        self.ids['help_label'].text = message1 + message2
-        self.ids['help_widget'].opacity = 1
+        self.ids['help_label'].text = message1 +'\n'+ message2
+
         print('help_widget', self.ids['help_widget'].pos)
+
+
+        # If the condition is robot then play the relevant sound files. If the condition
+        if (self.the_app.condition == 'tablet'):
+            self.ids['help_widget'].opacity = 1
+        elif (self.the_app.condition == 'robot'):
+            self.ids['help_widget'].opacity = 1
+            #message =  {'action': 'play_audio_file', 'parameters': ['/home/nao/naoqi/sounds/dyslexia/s_w15_m7.wav']}
+            message = {'tablet_to_manager': {'action': 'play_audio_file', 'parameters': [self.file_full_path(file_name_pre1),self.file_full_path(file_name_feedback1)]}}
+
+            message_str = str(json.dumps(message))
+            print("robot help me please", message_str)
+            KC.client.send_message(message_str)
 
         # self.screen_manager.get_screen('ScreenDyslexia').dyslexia_tefel_data
 
+    def file_full_path(self, name):
+        full_path = str('/home/nao/naoqi/sounds/dyslexia/'+str(name)+'.wav')
+        return full_path
 
     def press_close_help(self):
         print("press_close_help")
@@ -395,3 +433,8 @@ class ScreenDyslexia (Screen):
         # self.screen_manager.get_screen('ScreenDyslexia').ids['help_widget'].pos_hint= {'center_x': 0.5, 'y': 0.2}
 
 
+    def data_received(self, data):
+        print ("ScreenDyslexia: data_received", data)
+        # self.the_app.screen_manager.current = 'ScreenAudience'
+        print("end")
+        # self.ids['callback_label'].text = data
