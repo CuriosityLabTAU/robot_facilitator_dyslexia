@@ -366,7 +366,7 @@ class ScreenDyslexia (Screen):
                 message1 = message1 + '\n'
                 feedback = self.dyslexia_single_data['m_' + str(answer1)][word_index]
                 if (feedback=='none'):
-                    feedback = 'לא, כדאי לבדוק שוב'
+                    feedback = self.dyslexia_single_data['m_other'][word_index]
                 message1 = message1 + feedback[::-1]
             if (answer2 >= 0):
                 message2 = self.dyslexia_single_data['m_' + str(answer2)][
