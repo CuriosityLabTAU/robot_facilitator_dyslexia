@@ -15,6 +15,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 class ScreenDyslexia (Screen):
+    diagnosis_checklist = []
     answers_single1 = []
     answers_single2 = []
     answers_tefel1 = []
@@ -127,11 +128,18 @@ class ScreenDyslexia (Screen):
         self.layout_diagnosis.add_widget(lbl_head1)
         for i, dyslexia in enumerate(self.dyslexia_types['dyslexia_types']):
             lbl_type = LabelDyslexia(text = dyslexia)
-            checkbox = CheckBoxDyslexia ()#(size_hint_x=None, width=300)
+            checkbox = CheckBoxDyslexia (on_press=self.diagnosis_checkbox)#(size_hint_x=None, width=300)
             checkbox.name = 'checkbox_' + str(i)
             self.layout_diagnosis.add_widget(lbl_type)
             self.layout_diagnosis.add_widget(checkbox)
+            self.diagnosis_checklist.append(False)
 
+    def diagnosis_checkbox(self, *args):
+        i = int(args[0].name.split('_')[1])
+        self.diagnosis_checklist[i] = not self.diagnosis_checklist[i]
+        print('-----')
+        print(i, self.diagnosis_checklist[i])
+        KL.log.insert(action=LogAction.data, obj='diagnosis_checklist', comment=str(self.diagnosis_checklist))
 
     def create_task_grid(self, task_name):
         # Create GridLayoutDyslexia inst that will be used whenever the single tab  or the tegel tab is pressed is pressed.

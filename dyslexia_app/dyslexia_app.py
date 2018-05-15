@@ -25,8 +25,8 @@ class DyslexiaApp(App):
         screen_register = ScreenRegister(self)
         self.screen_manager.add_widget(screen_dyslexia)
         self.screen_manager.add_widget(screen_register)
-        self.screen_manager.current = 'ScreenDyslexia'  #'ScreenRegister'
-        #self.screen_manager.current = 'ScreenRegister'
+        #self.screen_manager.current = 'ScreenDyslexia'  #'ScreenRegister'
+        self.screen_manager.current = 'ScreenRegister'
         self.condition = 'robot'
 
         self.try_connection()
@@ -46,6 +46,8 @@ class DyslexiaApp(App):
         self.server_ip_end += 1
         if self.server_ip_end < 9:
             self.try_connection()
+        else:
+            self.screen_manager.get_screen('ScreenRegister').ids['callback_label'].text = 'stand alone'
 
     def success_connection(self):
         self.server_ip_end = 99
@@ -62,9 +64,12 @@ class DyslexiaApp(App):
         group_id = self.screen_manager.current_screen.ids['group_id'].text
         message = {'tablet_to_manager': {'action': 'register_tablet',
                                          'parameters': {'group_id': group_id, 'tablet_id': tablet_id}}}
-        message_str = str(json.dumps(message))
-        print("register_tablet", message_str)
-        KC.client.send_message(message_str)
+        if KC.client.status == True:
+            message_str = str(json.dumps(message))
+            print("register_tablet", message_str)
+            KC.client.send_message(message_str)
+        else:
+            self.screen_manager.current = 'ScreenDyslexia'
 
     def data_received(self, data):
         print ("robotator_app: data_received", data)
