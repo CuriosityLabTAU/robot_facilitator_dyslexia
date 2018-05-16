@@ -29,7 +29,7 @@ class ScreenDyslexia (Screen):
     tefel_mistakes_length = 0
     single_length = 0
     tefel_length = 0
-    current_tab = 'single'
+   # current_tab = 'single'
 
     def __init__(self, the_app):
         #init the app. Set the tab to be single words
@@ -122,17 +122,55 @@ class ScreenDyslexia (Screen):
 
     def create_diagnosis_grid(self):
         self.layout_diagnosis = GridLayoutDyslexia2(cols=2)
-        lbl_head1 = LabelHeadingDyslexia(text='הריחב') #,size_hint_x=None, width=300)
-        lbl_head0 = LabelHeadingDyslexia(text='היסקלסיד', halign='right')
-        self.layout_diagnosis.add_widget(lbl_head0)
+
+        #lbl_head0 = LabelHeadingDyslexia(text='הקידב')
+        lbl_head1 = LabelHeadingDyslexia(text='היסקלסיד', halign='right')
+        lbl_head2 = LabelHeadingDyslexia(text='הריחב')  # ,size_hint_x=None, width=300)
+
+        #self.layout_diagnosis.add_widget(lbl_head0)
         self.layout_diagnosis.add_widget(lbl_head1)
+        self.layout_diagnosis.add_widget(lbl_head2)
         for i, dyslexia in enumerate(self.dyslexia_types['dyslexia_types']):
             lbl_type = LabelDyslexia(text = dyslexia)
             checkbox = CheckBoxDyslexia (on_press=self.diagnosis_checkbox)#(size_hint_x=None, width=300)
             checkbox.name = 'checkbox_' + str(i)
-            self.layout_diagnosis.add_widget(lbl_type)
+            #btn_question = ButtonDyslexia(id='d' + str(i),text='?')
+            #self.layout_diagnosis.add_widget(btn_question)
             self.layout_diagnosis.add_widget(checkbox)
+            self.layout_diagnosis.add_widget(lbl_type)
             self.diagnosis_checklist.append(False)
+
+        lbl_type = LabelDyslexia(text="")
+        btn_check = ButtonDyslexia(id='d_test' , text='הקידב')
+        self.layout_diagnosis.add_widget(btn_check)
+        self.layout_diagnosis.add_widget(lbl_type)
+
+
+    def press_diagnosis_test(self,*args):
+        print ("press_diagnosis_test")
+        sound_list = []
+        str_message =''
+        for i, is_checked in enumerate(self.diagnosis_checklist):
+            if is_checked:
+                sound_list.append(self.file_full_path('D_'+str(i)))
+                sound_list.append(self.file_full_path('a'+str(i)))
+                str_message = str_message + str(self.dyslexia_types['dyslexia_types'][i]) + str(' :םתרחב')
+                str_message = str_message + '\n'
+                str_message = str_message + self.dyslexia_types['feedback'][i][::-1]
+                str_message = str_message + '\n'
+
+        sound_list.append(self.file_full_path('final'))
+
+        if (self.the_app.condition == 'tablet'):
+            self.ids['help_label'].text = str_message
+            self.ids['help_widget'].opacity = 1
+        elif (self.the_app.condition =='robot'):
+            #self.ids['help_label'].text = str_message
+            #self.ids['help_widget'].opacity = 1
+            nao_message = {'tablet_to_manager': {'action': 'play_audio_file', 'parameters': sound_list}}
+            nao_message_str = str(json.dumps(nao_message))
+            print("robot help me please", nao_message_str)
+            KC.client.send_message(nao_message_str)
 
     def diagnosis_checkbox(self, *args):
         i = int(args[0].name.split('_')[1])
@@ -335,6 +373,8 @@ class ScreenDyslexia (Screen):
         column_name = selection_id[1]  # '1'/'2'
         word_index = int(selection_id[3:])  # 0-17
 
+
+
         if (task_name == 's'):  # single task
             mistake_index = self.dyslexia_single_mistakes['initials'].index(spinner_inst.text)
             if (column_name == '1'):  # first column
@@ -370,10 +410,15 @@ class ScreenDyslexia (Screen):
 
 
     def press_help_button(self, btn_inst):
+
+        task = btn_inst.id[0]  # s/t
+        if (task=='d'):
+            self.press_diagnosis_test()
+            return
+
         print("press_help_button", btn_inst.id)
         word_index = int(btn_inst.id[1:])
         print('word_index=', word_index)
-        task = btn_inst.id[0]  # s/t
         message1 = ''
         message2 = ''
         nao_message = ''
@@ -381,9 +426,22 @@ class ScreenDyslexia (Screen):
         file_name2 = ''
         answer1=-1
         answer2=-1
+
         if (task == 's'):
             answer1 = int(self.answers_single1[word_index])
             answer2 = int(self.answers_single2[word_index])
+
+            print(self.dyslexia_single_data['answer1'][word_index])
+            if (self.dyslexia_single_data['answer1'][word_index]!='none'):
+                correct_answer1 = self.dyslexia_single_mistakes['initials'].index(self.dyslexia_single_data['answer1'][word_index][::-1])
+            else:
+                correct_answer1 = -1
+            if (self.dyslexia_single_data['answer2'][word_index]!='none'):
+                correct_answer2 = self.dyslexia_single_mistakes['initials'].index(self.dyslexia_single_data['answer2'][word_index][::-1])
+            else:
+                correct_answer2 = -1
+
+            print('correct_answer1 ', str(correct_answer1),'correct_answer2',str(correct_answer2))
             print('answer1 2', answer1, answer2)
             if (answer1 >= 0):
                 file_name_pre1 = 'M_' + str(answer1) #you choose ...
@@ -393,27 +451,55 @@ class ScreenDyslexia (Screen):
                 feedback = self.dyslexia_single_data['m_' + str(answer1)][word_index]
                 file_name_feedback1 = 's_w'+str(word_index)+'_m'+str(answer1)
                 if (feedback=='none'):
-                    feedback = self.dyslexia_single_data['m_other'][word_index]
-                    file_name_feedback1 = 'other_response'+str(np.random.randint(1,8))
+                    if (answer1 == correct_answer1):
+                        feedback = self.dyslexia_single_data['m_correct'][word_index]
+                        file_name_feedback1 = 'correct'
+                    else:
+                        feedback = self.dyslexia_single_data['m_other'][word_index]
+                        file_name_feedback1 = 'other_response'+str(np.random.randint(1,8))
                 message1 = message1 + feedback[::-1]
                 nao_message = {'tablet_to_manager': {'action': 'play_audio_file',
                                                      'parameters': [self.file_full_path(file_name_pre1),
                                                                     self.file_full_path(file_name_feedback1)]}}
-                if (answer2 >= 0):
-                    file_name_pre2 = 'M_' + str(answer2)  # you choose ...
-                    message2 = str(self.dyslexia_single_mistakes['mistakes'][answer2]) + str(' :םתרחבו')
-                    message2 = message2 + '\n'
-                    feedback = self.dyslexia_single_data['m_' + str(answer2)][word_index]
-                    file_name_feedback2 = 's_w'+str(word_index)+'_m'+str(answer2)
-                    if (feedback=='none'):
+            if (answer2 >= 0 and answer1 >= 0):
+                file_name_pre2 = 'M_' + str(answer2)  # you choose ...
+                message2 = str(self.dyslexia_single_mistakes['mistakes'][answer2]) + str(' :םתרחבו')
+                message2 = message2 + '\n'
+                feedback = self.dyslexia_single_data['m_' + str(answer2)][word_index]
+                file_name_feedback2 = 's_w'+str(word_index)+'_m'+str(answer2)
+                if (feedback=='none'):
+                    if (answer2 == correct_answer2):
+                        feedback = self.dyslexia_single_data['m_correct'][word_index]
+                        file_name_feedback1 = 'correct'
+                    else:
                         feedback = self.dyslexia_single_data['m_other'][word_index]
                         file_name_feedback2 = 'other_response' + str(np.random.randint(1, 8))
-                    message2 = message2 + feedback[::-1]
-                    nao_message = {'tablet_to_manager': {'action': 'play_audio_file',
-                                                         'parameters': [self.file_full_path(file_name_pre1),
-                                                                        self.file_full_path(file_name_feedback1),
-                                                                        self.file_full_path(file_name_pre2),
-                                                                        self.file_full_path(file_name_feedback2)]}}
+                message2 = message2 + feedback[::-1]
+                nao_message = {'tablet_to_manager': {'action': 'play_audio_file',
+                                                     'parameters': [self.file_full_path(file_name_pre1),
+                                                                    self.file_full_path(file_name_feedback1),
+                                                                    self.file_full_path(file_name_pre2),
+                                                                    self.file_full_path(file_name_feedback2)]}}
+
+            if (answer2 >= 0 and answer1 < 0):
+                file_name_pre2 = 'M_' + str(answer2)  # you choose ...
+                message2 = str(self.dyslexia_single_mistakes['mistakes'][answer2]) + str(' :םתרחבו')
+                message2 = message2 + '\n'
+                feedback = self.dyslexia_single_data['m_' + str(answer2)][word_index]
+                file_name_feedback2 = 's_w'+str(word_index)+'_m'+str(answer2)
+                if (feedback=='none'):
+                    if (answer2 == correct_answer2):
+                        feedback = self.dyslexia_single_data['m_correct'][word_index]
+                        file_name_feedback1 = 'correct'
+                    else:
+                        feedback = self.dyslexia_single_data['m_other'][word_index]
+                        file_name_feedback2 = 'other_response' + str(np.random.randint(1, 8))
+                message2 = message2 + feedback[::-1]
+                nao_message = {'tablet_to_manager': {'action': 'play_audio_file',
+                                                     'parameters': [self.file_full_path(file_name_pre2),
+                                                                    self.file_full_path(file_name_feedback2)]}}
+
+
             if (answer1<0 and answer2<0):
                 feedback = self.dyslexia_single_data['m_none'][word_index][::-1]
                 message1 = feedback
@@ -422,6 +508,11 @@ class ScreenDyslexia (Screen):
                                                      'parameters': [self.file_full_path(file_name_feedback1)]}}
         elif (task == 't'):
             answer1 = int(self.answers_tefel1[word_index])
+            if (self.dyslexia_tefel_data['answer1'][word_index] != 'none'):
+                correct_answer1 = self.dyslexia_tefel_mistakes['initials'].index(
+                    self.dyslexia_tefel_data['answer1'][word_index][::-1])
+            else:
+                correct_answer1 = -1
             if (answer1 >= 0):
                 file_name_pre1 = 'M_' + str(answer1)  # you choose ...
                 print(self.dyslexia_single_mistakes['mistakes'][answer1])
@@ -430,13 +521,19 @@ class ScreenDyslexia (Screen):
                 feedback = self.dyslexia_tefel_data['m_' + str(answer1)][word_index]
                 file_name_feedback1 = 's_w' + str(word_index) + '_m' + str(answer1)
                 if (feedback == 'none'):
-                    feedback = self.dyslexia_tefel_data['m_other'][word_index]
-                    file_name_feedback1 = 'other_response' + str(np.random.randint(1, 8))
+                    if (answer1 == correct_answer1):
+                        feedback = self.dyslexia_tefel_data['m_correct'][word_index]
+                        file_name_feedback1 = 'correct'
+                    else:
+                        feedback = self.dyslexia_tefel_data['m_other'][word_index]
+                        file_name_feedback1 = 'other_response' + str(np.random.randint(1, 8))
                 message1 = message1 + feedback[::-1]
             elif (answer1 < 0): # did not choose anything
                 feedback = self.dyslexia_tefel_data['m_none'][word_index][::-1]
                 message1 = feedback
                 file_name_feedback1 = 'other_response' + str(np.random.randint(1, 8))
+
+
         print("message2",message2)
         self.ids['help_label'].text = message1 +'\n'+ message2
         print('help_widget', self.ids['help_widget'].pos)
@@ -445,7 +542,7 @@ class ScreenDyslexia (Screen):
         if (self.the_app.condition == 'tablet'):
             self.ids['help_widget'].opacity = 1
         elif (self.the_app.condition == 'robot'):
-            self.ids['help_widget'].opacity = 1
+            #self.ids['help_widget'].opacity = 1
             #message =  {'action': 'play_audio_file', 'parameters': ['/home/nao/naoqi/sounds/dyslexia/s_w15_m7.wav']}
             if (nao_message ==""): #this will happen if the student only selected the second column
                 file_name_feedback1 = 'other_response' + str(np.random.randint(1, 8))
@@ -457,6 +554,7 @@ class ScreenDyslexia (Screen):
             KC.client.send_message(nao_message_str)
 
         # self.screen_manager.get_screen('ScreenDyslexia').dyslexia_tefel_data
+
 
     def file_full_path(self, name):
         full_path = str('/home/nao/naoqi/sounds/dyslexia/'+str(name)+'.wav')

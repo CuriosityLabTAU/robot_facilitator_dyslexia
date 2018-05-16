@@ -44,7 +44,8 @@ def get_single_task ():
                        'm_16':[],
                        'm_17':[],
                        'm_other':[],
-                       'm_none':[]
+                       'm_none':[],
+                       'm_correct': []
                        }
 
     # Setup the Sheets API
@@ -58,7 +59,7 @@ def get_single_task ():
 
     # Call the Sheets API
     SPREADSHEET_ID = '1xtlwZ2EGO18lPJCNV2IWpvhSFblzFLyyHdka01mAdIs'
-    RANGE_NAME = 'single1!B3:Y'
+    RANGE_NAME = 'single1!B3:Z'
     result = service.spreadsheets().values().get(spreadsheetId=SPREADSHEET_ID,
                                                  range=RANGE_NAME).execute()
     values = result.get('values', [])
@@ -93,6 +94,7 @@ def get_single_task ():
             dyslexia_single['m_17'].append(row[21])
             dyslexia_single['m_other'].append(row[22])
             dyslexia_single['m_none'].append(row[23])
+            dyslexia_single['m_correct'].append(row[24])
     print(dyslexia_single)
 
     # Write JSON file
@@ -132,7 +134,8 @@ def get_tefel_task ():
                       'm_16': [],
                       'm_17': [],
                       'm_other': [],
-                      'm_none': []
+                      'm_none': [],
+                      'm_correct':[]
                       }
 
     # Setup the Sheets API
@@ -146,7 +149,7 @@ def get_tefel_task ():
 
     # Call the Sheets API
     SPREADSHEET_ID = '1xtlwZ2EGO18lPJCNV2IWpvhSFblzFLyyHdka01mAdIs'
-    RANGE_NAME = 'tefel1!B3:X'
+    RANGE_NAME = 'tefel1!B3:Y'
     result = service.spreadsheets().values().get(spreadsheetId=SPREADSHEET_ID,
                                                  range=RANGE_NAME).execute()
     values = result.get('values', [])
@@ -180,6 +183,7 @@ def get_tefel_task ():
             dyslexia_tefel['m_17'].append(row[20])
             dyslexia_tefel['m_other'].append(row[21])
             dyslexia_tefel['m_none'].append(row[22])
+            dyslexia_tefel['m_correct'].append(row[23])
 
     print(dyslexia_tefel)
 
@@ -285,7 +289,8 @@ def get_tefel_mistakes ():
     print(dyslexia_tefel_mistakes == data_loaded)
 
 def get_dyslexia_types ():
-    dyslexia_types = {'dyslexia_types':[]}
+    dyslexia_types = {'dyslexia_types':[],
+                      'feedback':[]}
 
     # Setup the Sheets API
     SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly'
@@ -298,7 +303,7 @@ def get_dyslexia_types ():
 
     # Call the Sheets API
     SPREADSHEET_ID = '1xtlwZ2EGO18lPJCNV2IWpvhSFblzFLyyHdka01mAdIs'
-    RANGE_NAME = 'dyslexia_types!A1:A'
+    RANGE_NAME = 'dyslexia_types!A2:B'
     result = service.spreadsheets().values().get(spreadsheetId=SPREADSHEET_ID,
                                                  range=RANGE_NAME).execute()
     values = result.get('values', [])
@@ -310,6 +315,7 @@ def get_dyslexia_types ():
             # Print columns A and E, which correspond to indices 0 and 4.
             print('%s' % (row[0]))
             dyslexia_types['dyslexia_types'].append(row[0])
+            dyslexia_types['feedback'].append(row[1])
 
     print(dyslexia_types)
 
