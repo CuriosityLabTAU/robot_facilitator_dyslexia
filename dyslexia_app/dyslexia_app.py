@@ -47,8 +47,8 @@ class DyslexiaApp(App):
         self.server_ip_end += 1
         if self.server_ip_end < 10:
             self.try_connection()
-        #else:
-        #    self.screen_manager.get_screen('ScreenRegister').ids['callback_label'].text = 'stand alone ' + str(self.server_ip_end)
+        else:
+           self.screen_manager.get_screen('ScreenRegister').ids['callback_label'].text = 'stand alone ' + str(self.server_ip_end)
 
     def success_connection(self):
         self.server_ip_end = 99
@@ -66,6 +66,7 @@ class DyslexiaApp(App):
         KL.log.insert(action=LogAction.data, obj='select_condition', comment=str(spinner_inst.text))
 
     def register_tablet(self):
+        print("trying to register tablet. KC.client.status is ", KC.client.status)
         tablet_id = self.screen_manager.current_screen.ids['tablet_id'].text
         group_id = self.screen_manager.current_screen.ids['group_id'].text
         message = {'tablet_to_manager': {'action': 'register_tablet',
