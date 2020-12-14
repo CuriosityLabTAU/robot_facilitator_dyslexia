@@ -2,12 +2,10 @@ import ast
 import json
 from datetime import datetime
 import collections
-import time
 
 format = '%Y_%m_%d_%H_%M_%S_%f'
 filename = "2018_05_16_13_07_03_365258.log"
 f = open(filename, "r")
-f = open('data_analysis/'+filename, "r")
 lines = f.readlines()
 dic_message = ast.literal_eval(lines[0])
 dic_message['2018_05_16_13_36_34_124697']['data']
@@ -15,6 +13,19 @@ dic_message['2018_05_16_13_30_49_732916']['data']
 datetime.strptime('2018_05_16_13_30_49_732916', '%Y_%m_%d_%H_%M_%S_%f' )
 
 arr = json.loads(dic_message['2018_05_16_13_30_49_732916']['data'])['log']['comment']
+
+from __future__ import division
+from datetime import datetime, timedelta
+
+def totimestamp(dt, epoch=datetime(1970,1,1)):
+    td = dt - epoch
+    # return td.total_seconds()
+    return (td.microseconds + (td.seconds + td.days * 86400) * 10**6) / 10**6
+
+now = datetime.utcnow()
+print now
+print totimestamp(now)
+
 
 print('filename', filename)
 for line in lines:
@@ -32,4 +43,5 @@ for line in lines:
 #
 # f_csv = csv.reader(open(filename), delimiter=';')
 # dict = json.load(open(filename, 'r'))
-od = collections.OrderedDict(sorted(dict.items(), key=lambda t: int(t[0])))
+od = collections.OrderedDict(sorted(dict.items(), key=lambda t: int(t[0].toordinal)))
+
