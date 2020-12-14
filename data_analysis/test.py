@@ -43,5 +43,19 @@ for line in lines:
 #
 # f_csv = csv.reader(open(filename), delimiter=';')
 # dict = json.load(open(filename, 'r'))
-od = collections.OrderedDict(sorted(dict.items(), key=lambda t: int(t[0].toordinal)))
+od = collections.OrderedDict(sorted(dic_message.items(), key=lambda t: totimestamp(datetime.strptime(t[0], '%Y_%m_%d_%H_%M_%S_%f' ))))
+
+def get_subject_id(od_):
+    subject_id_ = ''
+    for k, v in od_.items():
+        # v = json.loads(v)
+        v = v[1]
+        print(k)
+        print(v)
+        # print()
+        # if v['obj'] == 'subject_id' and v['action'] == 'text':
+        #    if len(v['comment']) > len(subject_id_):
+        #        subject_id_ = v['comment']
+    return subject_id_
+
 
