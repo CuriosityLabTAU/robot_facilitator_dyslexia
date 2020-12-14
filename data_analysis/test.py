@@ -2,6 +2,7 @@ import ast
 import json
 from datetime import datetime
 import collections
+import time
 
 format = '%Y_%m_%d_%H_%M_%S_%f'
 filename = "2018_05_16_13_07_03_365258.log"
@@ -31,4 +32,4 @@ for line in lines:
 #
 # f_csv = csv.reader(open(filename), delimiter=';')
 # dict = json.load(open(filename, 'r'))
-od = collections.OrderedDict(sorted(dict.items(), key=lambda t: int(t[0].toordinal)))
+od = collections.OrderedDict(sorted(dict.items(), key=lambda t: int(t[0])))
