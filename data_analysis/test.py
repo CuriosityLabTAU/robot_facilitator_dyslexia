@@ -6,6 +6,7 @@ import collections
 format = '%Y_%m_%d_%H_%M_%S_%f'
 filename = "2018_05_16_13_07_03_365258.log"
 f = open(filename, "r")
+f = open('data_analysis/'+filename, "r")
 lines = f.readlines()
 dic_message = ast.literal_eval(lines[0])
 dic_message['2018_05_16_13_36_34_124697']['data']
