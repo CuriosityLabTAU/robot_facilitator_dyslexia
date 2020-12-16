@@ -29,7 +29,7 @@ print(len(file_names))
 
 format = '%Y_%m_%d_%H_%M_%S_%f'
 iter= 0
-for file in file_names[1:]:
+for file in file_names[1:]: # iterate on all files (except the first)
     print('k=',iter)
     iter = iter+ 1
     f = open(file, "r")
@@ -42,14 +42,14 @@ for file in file_names[1:]:
     action_data_list = []
     action_spinner_list = []
 
+# sort dictionary
     od = collections.OrderedDict(
         sorted(dic_message.items(), key=lambda t: totimestamp(datetime.strptime(t[0], '%Y_%m_%d_%H_%M_%S_%f'))))
 
-    for k, v in od.items():
+    for k, v in od.items(): # iterate all keys and values
         # v = json.loads(v)
-        print(k)
-        print(totimestamp(datetime.strptime(k, '%Y_%m_%d_%H_%M_%S_%f')))
-        ts = totimestamp(datetime.strptime(k, '%Y_%m_%d_%H_%M_%S_%f'))
+        #print(k)
+        ts = totimestamp(datetime.strptime(k, '%Y_%m_%d_%H_%M_%S_%f')) # timestamp
         ts_list.append(totimestamp(datetime.strptime(k, '%Y_%m_%d_%H_%M_%S_%f')))
         action = ast.literal_eval(v['data'])['log']['action']
         if action == 'up':
