@@ -5,8 +5,8 @@ from datetime import datetime
 import collections
 import matplotlib.pyplot as plt
 from datetime import datetime, timedelta
-import matplotlib
 import numpy as np
+import matplotlib
 from os import listdir
 from os.path import isfile, join, basename
 
